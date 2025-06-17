@@ -1,6 +1,7 @@
 import {
 	Box,
 	IconButton,
+	Paper,
 	Table,
 	TableBody,
 	TableCell,
@@ -20,8 +21,23 @@ import ProjectsEditModal from './ProjectsEditModal'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import InfoIcon from '@mui/icons-material/Info'
+type Column = {
+	id:
+		| 'project_name'
+		| 'project_initiator'
+		| 'project_budget'
+		| 'region_id'
+		| 'jobs_created'
+		| 'planned_date'
+		| 'responsible_party'
+		| 'project_status_id'
+		| 'project_overall_status'
+		| 'actions'
+	label: string
+	align?: 'left' | 'right' | 'center'
+}
 
-const columns = [
+const columns: Column[] = [
 	{ id: 'project_name', label: 'Название проекта' },
 	{ id: 'project_initiator', label: 'Инициатор' },
 	{ id: 'project_budget', label: 'Бюджет' },
@@ -31,7 +47,7 @@ const columns = [
 	{ id: 'responsible_party', label: 'Ответственный' },
 	{ id: 'project_status_id', label: 'Статус' },
 	{ id: 'project_overall_status', label: 'Общий' },
-	{ id: 'actions', label: 'Действия' },
+	{ id: 'actions', label: 'Действия', align: 'right' },
 ]
 
 export function ProjectTable({
@@ -91,12 +107,14 @@ export function ProjectTable({
 
 	return (
 		<>
-			<TableContainer>
-				<Table stickyHeader>
+			<TableContainer component={Paper}>
+				<Table>
 					<TableHead>
 						<TableRow>
 							{columns.map(col => (
-								<TableCell key={col.id}>{col.label}</TableCell>
+								<TableCell key={col.id} align={col.align || 'left'}>
+									{col.label}
+								</TableCell>
 							))}
 						</TableRow>
 					</TableHead>
@@ -114,7 +132,7 @@ export function ProjectTable({
 								<TableCell>{project.responsible_party}</TableCell>
 								<TableCell>{project.project_status}</TableCell>
 								<TableCell>{project.overall_status}</TableCell>
-								<TableCell>
+								<TableCell align='right'>
 									<IconButton onClick={() => handleOpen(project, 'more')}>
 										<InfoIcon color='primary' />
 									</IconButton>

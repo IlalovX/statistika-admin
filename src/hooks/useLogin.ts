@@ -32,7 +32,6 @@ export function useLogin() {
 			})
 			dispatch(updateUserMe(user))
 			queryClient.setQueryData(['user'], user)
-			console.log(user.category_id)
 			if (user.is_superadmin) {
 				navigate(`/users`)
 			} else {

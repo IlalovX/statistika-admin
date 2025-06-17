@@ -70,7 +70,7 @@ export default function TourismSubGroupTable() {
 							<TableCell>ID</TableCell>
 							<TableCell>Название</TableCell>
 							<TableCell>Дата</TableCell>
-							<TableCell>Действия</TableCell>
+							<TableCell align='right'>Действия</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -81,7 +81,7 @@ export default function TourismSubGroupTable() {
 								<TableCell>
 									{new Date(sg.created_at).toLocaleDateString()}
 								</TableCell>
-								<TableCell>
+								<TableCell align='right'>
 									<Button
 										variant='outlined'
 										size='small'

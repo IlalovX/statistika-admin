@@ -24,7 +24,7 @@ function Projects() {
 					<ProjectsAddModal regions={regions} statuses={statuses} />
 				</div>
 			</header>
-			<ProjectTable regions={regions} statuses={statuses}/>
+			<ProjectTable regions={regions} statuses={statuses} />
 		</div>
 	)
 }

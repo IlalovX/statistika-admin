@@ -5,7 +5,6 @@ import {
 	getAccessToken,
 	getRefreshToken,
 	removeTokens,
-	saveTokens,
 } from '../services/auth-token.service'
 
 const options: CreateAxiosDefaults = {
@@ -36,21 +35,22 @@ axiosWithAuth.interceptors.response.use(
 		) {
 			originalRequest._retry = true
 			try {
-				const res = await axiosClassic.post('/admin/refresh', {
-					refresh_token: refreshToken,
-				})
+				toast.error('Токен истек')
+				// const res = await axiosClassic.post('/admin/refresh', {
+				// 	refresh_token: refreshToken,
+				// })
 
-				const newAccessToken = res.data.access_token
-				if (newAccessToken) {
-					saveTokens(newAccessToken)
-					toast.success('Access токен обновлён 🔄')
+				// const newAccessToken = res.data.access_token
+				// if (newAccessToken) {
+				// 	saveTokens(newAccessToken, refreshToken)
+				// 	toast.success('Access токен обновлён 🔄')
 
-					originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+				// 	originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
 
-					return axiosWithAuth(originalRequest)
-				} else {
-					throw new Error('Access токен не получен')
-				}
+				// 	return axiosWithAuth(originalRequest)
+				// } else {
+				// 	throw new Error('Access токен не получен')
+				// }
 			} catch (refreshError) {
 				toast.error('Сессия истекла. Войдите снова 🔒')
 				removeTokens()

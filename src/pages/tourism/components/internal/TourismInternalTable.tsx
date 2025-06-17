@@ -16,8 +16,8 @@ import {
 	useGetInternalList,
 } from '../../../../hooks/useTourism'
 import type { EditTourismInternalForm } from '../../../../types/tourism'
-import TourismInternalEditModal from './TourismInternalEditModal'
 import { getMonthLabel } from '../../../../utils/getMontsLabel'
+import TourismInternalEditModal from './TourismInternalEditModal'
 
 function TourismInternalTable() {
 	const { data } = useGetInternalList()
@@ -70,7 +70,7 @@ function TourismInternalTable() {
 										<EditIcon />
 									</IconButton>
 									<IconButton onClick={() => handleDelete(item.id)}>
-										<DeleteIcon />
+										<DeleteIcon  color='error'/>
 									</IconButton>
 								</TableCell>
 							</TableRow>

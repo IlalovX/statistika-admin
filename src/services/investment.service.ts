@@ -67,7 +67,7 @@ export const InvestmentService = {
 	},
 	async getProductionDistrict() {
 		const res = await axiosWithAuth.get('/investment/admin/production-district')
-		return res.data.data
+		return res.data
 	},
 	async createProductionDistrict(data: CreateProductionDistrictForm) {
 		const res = await axiosWithAuth.post(

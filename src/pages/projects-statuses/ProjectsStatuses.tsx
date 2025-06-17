@@ -66,7 +66,7 @@ const ProjectsStatusesPage = () => {
 					color='primary'
 					onClick={() => handleOpen()}
 				>
-					Добавить статус
+					Добавить
 				</Button>
 			</Box>
 

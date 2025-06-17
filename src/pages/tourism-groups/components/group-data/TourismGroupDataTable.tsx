@@ -48,7 +48,7 @@ export default function TourismGroupDataTable({ groupId, subgroup }: Props) {
 							<TableCell>Месяц</TableCell>
 							<TableCell>Страна</TableCell>
 							<TableCell>Туристы</TableCell>
-							<TableCell>Действия</TableCell>
+							<TableCell align='right'>Действия</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -59,8 +59,8 @@ export default function TourismGroupDataTable({ groupId, subgroup }: Props) {
 								<TableCell>{row.month}</TableCell>
 								<TableCell>{row.country_code?.official}</TableCell>
 								<TableCell>{row.tourist_count}</TableCell>
-								<TableCell>
-									<Button onClick={() => setEditing(row)}>Редактировать</Button>
+								<TableCell align='right'>
+									<Button onClick={() => setEditing(row)} variant='outlined'>Редактировать</Button>
 								</TableCell>
 							</TableRow>
 						))}

@@ -1,3 +1,5 @@
+import type { CountryCode } from './tourism-groups'
+
 export interface CreateInvestmentIndustryForm {
 	month: number
 	year: number
@@ -23,6 +25,18 @@ export interface CreateInvestmentsForm {
 	investment_amount: string
 }
 
+export interface GetInvestmentsForm {
+	id : string|number
+	country: CountryCode
+	year: number
+	month: number
+	region_id: number
+	project_name: string
+	project_count: number
+	project_workplaces: number
+	investment_amount: string
+}
+
 export interface CreateProductionDistrictForm {
 	year: number
 	month: number
@@ -32,6 +46,18 @@ export interface CreateProductionDistrictForm {
 	weight: string
 	percent: string
 }
+
+export interface GetProductionDistrictForm {
+	id: number
+	year: number
+	month: number
+	region_id: number
+	product: string
+	area: string
+	weight: string
+	percent: string
+}
+
 
 export interface GetIndustryList {
 	id: number // если используется при редактировании

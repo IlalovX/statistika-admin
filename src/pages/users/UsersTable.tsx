@@ -43,7 +43,7 @@ function UsersTable() {
 								<TableCell>{user.region}</TableCell>
 								<TableCell>{getCategoryName(user.category)}</TableCell>
 								<TableCell align='center'>
-									<IconButton color='primary'>
+									<IconButton>
 										<EditIcon />
 									</IconButton>
 									<IconButton color='error'>

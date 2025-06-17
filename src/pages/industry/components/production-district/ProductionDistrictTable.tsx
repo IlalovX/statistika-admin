@@ -13,23 +13,24 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import {
-	useDeleteIndustry,
-	useGetIndustryList,
+	useDeletProductionDistrict,
+	useGetProductionDistrict,
 } from '../../../../hooks/useInvestment'
 import { useGetRegionsList } from '../../../../hooks/useRegions'
-import type { GetIndustryList } from '../../../../types/investment'
-import { getMonthLabel } from '../../../../utils/getMontsLabel'
-import IndustryAddModal from './IndustryAddModal'
-import IndustryEditModal from './IndustryEditModal'
+import type { GetProductionDistrictForm } from '../../../../types/investment'
+import ProductionDistrictAddModal from './ProductionDistrictAddModal'
+import ProductionDistrictEditModal from './ProductionDistrictEditModal'
 
-export default function IndustryTable() {
-	const { data: industries = [], isLoading } = useGetIndustryList()
-	const { mutate: deleteIndustry } = useDeleteIndustry()
+export default function ProductionDistrictTable() {
+	const { data: list = [], isLoading } = useGetProductionDistrict()
 	const { data: regions = [] } = useGetRegionsList()
+	const { mutate: deleteItem } = useDeletProductionDistrict()
 
 	const [addOpen, setAddOpen] = useState(false)
 	const [editOpen, setEditOpen] = useState(false)
-	const [selected, setSelected] = useState<GetIndustryList | null>(null)
+	const [selected, setSelected] = useState<GetProductionDistrictForm | null>(
+		null
+	)
 
 	if (isLoading) return <p>Загрузка...</p>
 
@@ -45,23 +46,25 @@ export default function IndustryTable() {
 					<TableHead>
 						<TableRow>
 							<TableCell>Год</TableCell>
-							<TableCell>Месяц</TableCell>
 							<TableCell>Регион</TableCell>
-							<TableCell>Вес продукта</TableCell>
-							<TableCell>Прибыль</TableCell>
+							<TableCell>Продукт</TableCell>
+							<TableCell>Площадь</TableCell>
+							<TableCell>Вес</TableCell>
+							<TableCell>Процент</TableCell>
 							<TableCell align='right'>Действия</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{industries?.map(row => (
+						{list.map(row => (
 							<TableRow key={row.id}>
 								<TableCell>{row.year}</TableCell>
-								<TableCell>{getMonthLabel(row.month)}</TableCell>
 								<TableCell>
-									{regions?.find(item => item.id == row.region_id)?.region_name}
+									{regions.find(r => r.id === row.region_id)?.region_name}
 								</TableCell>
-								<TableCell>{row.product_weight}</TableCell>
-								<TableCell>{row.product_profit}</TableCell>
+								<TableCell>{row.product}</TableCell>
+								<TableCell>{row.area}</TableCell>
+								<TableCell>{row.weight}</TableCell>
+								<TableCell>{row.percent}</TableCell>
 								<TableCell align='right'>
 									<IconButton
 										onClick={() => {
@@ -71,9 +74,7 @@ export default function IndustryTable() {
 									>
 										<Edit />
 									</IconButton>
-									<IconButton
-										onClick={() => deleteIndustry({ id: +row.id as number })}
-									>
+									<IconButton onClick={() => deleteItem({ id: row.id })}>
 										<Delete color='error' />
 									</IconButton>
 								</TableCell>
@@ -82,11 +83,14 @@ export default function IndustryTable() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<IndustryAddModal open={addOpen} onClose={() => setAddOpen(false)} />
-			<IndustryEditModal
+			<ProductionDistrictAddModal
+				open={addOpen}
+				onClose={() => setAddOpen(false)}
+			/>
+			<ProductionDistrictEditModal
 				open={editOpen}
 				onClose={() => setEditOpen(false)}
-				data={selected as GetIndustryList}
+				data={selected}
 			/>
 		</div>
 	)

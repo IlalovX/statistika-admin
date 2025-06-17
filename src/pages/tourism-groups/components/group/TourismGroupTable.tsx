@@ -42,7 +42,7 @@ export default function TourismGroupTable() {
 						<TableRow>
 							<TableCell>ID</TableCell>
 							<TableCell>Название</TableCell>
-							<TableCell>Действия</TableCell>
+							<TableCell align='right'>Действия</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -50,7 +50,7 @@ export default function TourismGroupTable() {
 							<TableRow key={group.id}>
 								<TableCell>{group.id}</TableCell>
 								<TableCell>{group.name}</TableCell>
-								<TableCell>
+								<TableCell align='right'>
 									<Button
 										variant='outlined'
 										size='small'

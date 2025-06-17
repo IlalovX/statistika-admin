@@ -70,7 +70,7 @@ export default function TorusimExternalTable() {
 										<EditIcon />
 									</IconButton>
 									<IconButton onClick={() => handleDelete(row.id)}>
-										<DeleteIcon />
+										<DeleteIcon color='error' />
 									</IconButton>
 								</TableCell>
 							</TableRow>
