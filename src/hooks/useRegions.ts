@@ -4,7 +4,7 @@ import type { Region } from '../types/regios'
 
 export function useGetRegionsList() {
 	return useQuery<Region[]>({
-		queryKey: ['regions list'],
+		queryKey: ['regions_list'],
 		queryFn: async () => {
 			return await RegionsService.getRegionsList()
 		},

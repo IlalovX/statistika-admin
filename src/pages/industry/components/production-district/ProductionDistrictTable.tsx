@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import {
-	useDeletProductionDistrict,
+	useDeleteProductionDistrict,
 	useGetProductionDistrict,
 } from '../../../../hooks/useInvestment'
 import { useGetRegionsList } from '../../../../hooks/useRegions'
@@ -24,7 +24,7 @@ import ProductionDistrictEditModal from './ProductionDistrictEditModal'
 export default function ProductionDistrictTable() {
 	const { data: list = [], isLoading } = useGetProductionDistrict()
 	const { data: regions = [] } = useGetRegionsList()
-	const { mutate: deleteItem } = useDeletProductionDistrict()
+	const { mutate: deleteItem } = useDeleteProductionDistrict()
 
 	const [addOpen, setAddOpen] = useState(false)
 	const [editOpen, setEditOpen] = useState(false)

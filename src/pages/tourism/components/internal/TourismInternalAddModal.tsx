@@ -6,14 +6,13 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
 import { useCreateInternal } from '../../../../hooks/useTourism'
 import type { CreateTourismInternalForm } from '../../../../types/tourism'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const schema = z.object({
 	year: z.coerce.number().min(1900, 'Год должен быть валиден'),
@@ -36,6 +35,7 @@ function TourismInternalAddModal({
 		handleSubmit,
 		reset,
 		formState: { errors },
+		control
 	} = useForm<FormValues>({
 		resolver: zodResolver(schema),
 	})
@@ -69,20 +69,11 @@ function TourismInternalAddModal({
 						</Grid>
 
 						<Grid size={6}>
-							<TextField
-								select
-								label='Месяц'
-								fullWidth
-								error={!!errors.month}
-								helperText={errors.month?.message}
-								{...register('month')}
-							>
-								{MONTHS.map(month => (
-									<MenuItem key={month.value} value={month.value}>
-										{month.label}
-									</MenuItem>
-								))}
-							</TextField>
+							<MonthSelect
+								control={control}
+								name='month'
+								error={errors.month?.message}
+							/>
 						</Grid>
 
 						<Grid size={6}>

@@ -6,15 +6,14 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useCreateProductionDistrict } from '../../../../hooks/useInvestment'
-import { useGetRegionsList } from '../../../../hooks/useRegions'
 import type { CreateProductionDistrictForm } from '../../../../types/investment'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const schema = z.object({
 	year: z.number().min(2000),
@@ -34,7 +33,6 @@ export default function ProductionDistrictAddModal({
 	onClose: () => void
 }) {
 	const { mutateAsync } = useCreateProductionDistrict()
-	const { data: regions = [] } = useGetRegionsList()
 
 	const {
 		register,
@@ -78,47 +76,17 @@ export default function ProductionDistrictAddModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<Controller
-								name='month'
+							<MonthSelect
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Месяц'
-										fullWidth
-										{...field}
-										error={!!errors.month}
-										helperText={errors.month?.message}
-									>
-										{MONTHS.map(month => (
-											<MenuItem key={month.value} value={month.value}>
-												{month.label}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='month'
+								error={errors.month?.message}
 							/>
 						</Grid>
 						<Grid size={6}>
-							<Controller
-								name='region_id'
+							<RegionSelect<CreateProductionDistrictForm>
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Регион'
-										fullWidth
-										{...field}
-										error={!!errors.region_id}
-										helperText={errors.region_id?.message}
-									>
-										{regions.map(region => (
-											<MenuItem key={region.id} value={region.id}>
-												{region.region_name}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='region_id'
+								error={errors.region_id?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

@@ -6,18 +6,17 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
 import { useEditYield } from '../../../../hooks/useAgriculture'
 import type {
 	CreateYieldForm,
 	GetYieldForm,
 } from '../../../../types/agriculture'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const isNumeric = (val: string) =>
 	typeof val === 'string' &&
@@ -104,25 +103,10 @@ export default function YieldEditModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<Controller
-								name='month'
+							<MonthSelect
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Месяц'
-										fullWidth
-										{...field}
-										error={!!errors.month}
-										helperText={errors.month?.message}
-									>
-										{MONTHS.map(month => (
-											<MenuItem key={month.value} value={month.value}>
-												{month.label}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='month'
+								error={errors.month?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

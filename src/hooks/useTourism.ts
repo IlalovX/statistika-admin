@@ -1,4 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import { QUERY_KEYS } from '../constants/queryKeys'
 import { TourismService } from '../services/tourism.service'
 import type {
 	CreateTourismExternalForm,
@@ -7,97 +9,113 @@ import type {
 	EditTourismInternalForm,
 	GetTourismInternal,
 } from '../types/tourism'
-import { toast } from 'sonner'
+
+// EXTERNAL
 
 export function useGetExternalList() {
 	return useQuery({
-		queryKey: ['tourism external list'],
-		queryFn: async () => {
-			return await TourismService.getTourismExternal()
-		},
+		queryKey: [QUERY_KEYS.TOURISM.EXTERNAL.LIST],
+		queryFn: () => TourismService.getTourismExternal(),
 	})
 }
+
 export function useCreateExternal() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create external'],
-		mutationFn: async (data: CreateTourismExternalForm) => {
-			return await TourismService.createTourismExternal(data)
-		},
+		mutationKey: [QUERY_KEYS.TOURISM.EXTERNAL.CREATE],
+		mutationFn: (data: CreateTourismExternalForm) =>
+			TourismService.createTourismExternal(data),
 		onSuccess: () => {
-			toast.success("Успешно создано ✅")
+			toast.success('Успешно создано ✅')
 			queryClient.invalidateQueries({
-				queryKey: ['tourism external list', 'tourism internal list'],
+				queryKey: [QUERY_KEYS.TOURISM.EXTERNAL.LIST],
 			})
-		},
-	})
-}
-export function useEditExternal() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['edit external'],
-		mutationFn: async (data: EditTourismExternalForm) => {
-			const { id, ...formData } = data
-			return await TourismService.editTourismExternal(formData, id)
-		},
-		onSuccess: () => {
-			toast.success("Успешно изменено ✅")
 			queryClient.invalidateQueries({
-				queryKey: ['tourism external list', 'tourism internal list'],
-				
+				queryKey: [QUERY_KEYS.TOURISM.INTERNAL.LIST],
 			})
 		},
 	})
 }
 
-export function useGetInternalList() {
-	return useQuery<GetTourismInternal[]>({
-		queryKey: ['tourism internal list'],
-		queryFn: async () => {
-			return await TourismService.getTourismInternal()
+export function useEditExternal() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.TOURISM.EXTERNAL.EDIT],
+		mutationFn: (data: EditTourismExternalForm) => {
+			const { id, ...formData } = data
+			return TourismService.editTourismExternal(formData, id)
+		},
+		onSuccess: () => {
+			toast.success('Успешно изменено ✅')
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TOURISM.EXTERNAL.LIST],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TOURISM.INTERNAL.LIST],
+			})
 		},
 	})
 }
+
+// INTERNAL
+
+export function useGetInternalList() {
+	return useQuery<GetTourismInternal[]>({
+		queryKey: [QUERY_KEYS.TOURISM.INTERNAL.LIST],
+		queryFn: () => TourismService.getTourismInternal(),
+	})
+}
+
 export function useCreateInternal() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create internal'],
-		mutationFn: async (data: CreateTourismInternalForm) => {
-			return await TourismService.createTourismInternal(data)
-		},
+		mutationKey: [QUERY_KEYS.TOURISM.INTERNAL.CREATE],
+		mutationFn: (data: CreateTourismInternalForm) =>
+			TourismService.createTourismInternal(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['tourism external list', 'tourism internal list'],
+				queryKey: [QUERY_KEYS.TOURISM.EXTERNAL.LIST],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TOURISM.INTERNAL.LIST],
 			})
 		},
 	})
 }
+
 export function useEditInternal() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['edit internal'],
-		mutationFn: async (data: EditTourismInternalForm) => {
+		mutationKey: [QUERY_KEYS.TOURISM.INTERNAL.EDIT],
+		mutationFn: (data: EditTourismInternalForm) => {
 			const { id, ...formData } = data
-			return await TourismService.editTourismInternal(formData, id)
+			return TourismService.editTourismInternal(formData, id)
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['tourism external list', 'tourism internal list'],
+				queryKey: [QUERY_KEYS.TOURISM.EXTERNAL.LIST],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TOURISM.INTERNAL.LIST],
 			})
 		},
 	})
 }
+
+// DELETE
 
 export function useDeleteBothTourism() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['delete both tourism'],
-		mutationFn: async (data: { id: string | number }) => {
-			return await TourismService.deleteTourismTuristData(data.id)
-		},
+		mutationKey: [QUERY_KEYS.TOURISM.DELETE],
+		mutationFn: (data: { id: string | number }) =>
+			TourismService.deleteTourismTuristData(data.id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['tourism external list', 'tourism internal list'],
+				queryKey: [QUERY_KEYS.TOURISM.EXTERNAL.LIST],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TOURISM.INTERNAL.LIST],
 			})
 		},
 	})

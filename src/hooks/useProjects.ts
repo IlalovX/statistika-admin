@@ -1,80 +1,81 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ProjectsService } from '../services/projects.service'
-import type { CreateProjectForm, EditProjectForm, GetProject } from '../types/projects'
 import { toast } from 'sonner'
+import { QUERY_KEYS } from '../constants/queryKeys'
+import { ProjectsService } from '../services/projects.service'
+import type {
+	CreateProjectForm,
+	EditProjectForm,
+	GetProject,
+} from '../types/projects'
 
+// CREATE
 export function useCreateProject() {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationKey: ['create project'],
-		mutationFn: async (data: CreateProjectForm) => {
-			return await ProjectsService.createProject(data)
-		},
+		mutationKey: [QUERY_KEYS.PROJECTS.CREATE],
+		mutationFn: (data: CreateProjectForm) =>
+			ProjectsService.createProject(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['projects list'] })
-			toast.success("Успешно создано ✅")
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PROJECTS.LIST] })
+			toast.success('Успешно создано ✅')
 		},
 	})
 }
 
+// EDIT
 export function useEditProject() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['edit project'],
-		mutationFn: async ({
-			data: data,
-			id: id,
+		mutationKey: [QUERY_KEYS.PROJECTS.EDIT],
+		mutationFn: ({
+			data,
+			id,
 		}: {
 			data: EditProjectForm
 			id: string | number
-		}) => {
-			return await ProjectsService.editProject(data, id)
-		},
+		}) => ProjectsService.editProject(data, id),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['projects list'] })
-			toast.success("Успешно изменено ✅")
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PROJECTS.LIST] })
+			toast.success('Успешно изменено ✅')
 		},
 	})
 }
 
+// DELETE
 export function useDeleteProject() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['delete project'],
-		mutationFn: async (id: string | number) => {
-			return await ProjectsService.deleteProject(id)
-		},
+		mutationKey: [QUERY_KEYS.PROJECTS.DELETE],
+		mutationFn: (id: string | number) => ProjectsService.deleteProject(id),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['projects list'] })
-			toast.success("Успешно удалено ✅")
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PROJECTS.LIST] })
+			toast.success('Успешно удалено ✅')
 		},
 	})
 }
 
+// GET LIST
 export function useGetProjectsList() {
 	return useQuery<GetProject[]>({
-		queryKey: ['projects list'],
-		queryFn: async () => {
-			return await ProjectsService.getProjectList()
-		},
+		queryKey: [QUERY_KEYS.PROJECTS.LIST],
+		queryFn: () => ProjectsService.getProjectList(),
 	})
 }
 
+// GET DETAIL
 export function useGetProjectDetail(id: string | number) {
 	return useQuery({
-		queryKey: ['project detail'],
-		queryFn: async () => {
-			return ProjectsService.getProjectDetail(id)
-		},
+		queryKey: [QUERY_KEYS.PROJECTS.DETAIL, id],
+		queryFn: () => ProjectsService.getProjectDetail(id),
+		enabled: !!id,
 	})
 }
 
+// GET OVERALL STATUS
 export function useGetProjectsOverallStatus(id: string | number) {
 	return useQuery({
-		queryKey: ['project overall status'],
-		queryFn: async () => {
-			return ProjectsService.getProjectsOverallStatus(id)
-		},
+		queryKey: [QUERY_KEYS.PROJECTS.OVERALL_STATUS, id],
+		queryFn: () => ProjectsService.getProjectsOverallStatus(id),
+		enabled: !!id,
 	})
 }

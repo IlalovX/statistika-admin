@@ -1,8 +1,8 @@
-import { axiosClassic } from '../api/interceptors'
+import { axiosWithAuth } from '../api/interceptors'
 
 export const RegionsService = {
 	async getRegionsList() {
-		const { data } = await axiosClassic.get('/region')
+		const { data } = await axiosWithAuth.get('/region')
 		return data.data
 	},
 }

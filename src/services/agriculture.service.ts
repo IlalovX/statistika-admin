@@ -52,7 +52,7 @@ export const AgricultureService = {
 		return res.data.data
 	},
 	async deleteDistrict(id: string | number) {
-		const res = await axiosWithAuth.get(`/agriculture/district/${id}`)
+		const res = await axiosWithAuth.delete(`/agriculture/district/${id}`)
 		return res.data.data
 	},
 	async getFirms() {

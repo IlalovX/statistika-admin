@@ -24,7 +24,7 @@ import InvestmentAddModal from './InvestmentAddModal'
 import InvestmentEditModal from './InvestmentEditModal'
 
 export default function InvestmentTable() {
-	const { data: investments = [] } = useGetInvestment()
+	const { data: investments = [], isLoading } = useGetInvestment()
 	const { mutate: deleteInvestment } = useDeleteInvestment()
 	const { data: regions = [] } = useGetRegionsList()
 	const [isAddOpen, setAddOpen] = useState(false)
@@ -33,6 +33,8 @@ export default function InvestmentTable() {
 	const handleDelete = (id: number) => {
 		deleteInvestment({ id })
 	}
+
+	if (isLoading) return <p>Загрузка...</p>
 
 	return (
 		<Box>

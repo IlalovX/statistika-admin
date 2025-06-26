@@ -76,7 +76,7 @@ export function TourismGroupDataEditModal({ data, open, onClose }: Props) {
 	return (
 		<Dialog open={open} onClose={onClose} fullWidth>
 			<DialogTitle>Редактировать данные</DialogTitle>
-			<DialogContent className='space-y-4 pt-4'>
+			<DialogContent className='!space-y-4 pt-4'>
 				<TextField
 					label='Год'
 					fullWidth

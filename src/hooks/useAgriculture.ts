@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEYS } from '../constants/queryKeys'
 import { AgricultureService } from '../services/agriculture.service'
 import type {
 	CreateDistrictForm,
@@ -10,191 +11,198 @@ import type {
 	GetYieldForm,
 } from '../types/agriculture'
 
+// YIELD
 export function useGetYield(year: number) {
 	return useQuery<GetYieldForm[]>({
-		queryKey: ['get yield list', year],
-		queryFn: async () => {
-			return await AgricultureService.getYield({ year })
-		},
-		enabled: !!year, // чтобы запрос не отправлялся без года
+		queryKey: [QUERY_KEYS.AGRICULTURE.YIELD_LIST, year],
+		queryFn: () => AgricultureService.getYield({ year }),
+		enabled: !!year,
 	})
 }
 
 export function useCreateYield() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['get yield list'],
-		mutationFn: async (data: CreateYieldForm) => {
-			return await AgricultureService.createYield(data)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get yield list'] })
-		},
-	})
-}
-export function useEditYield() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['edit yield list'],
-		mutationFn: async (data: CreateYieldForm & { id: string | number }) => {
-			const { id, ...formData } = data
-			return await AgricultureService.editYield(formData, id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get yield list'] })
-		},
-	})
-}
-export function useDeleteYield() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['delete yield list'],
-		mutationFn: async ({ id }: { id: string | number }) => {
-			return await AgricultureService.deleteYield(id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get yield list'] })
-		},
+		mutationKey: [QUERY_KEYS.AGRICULTURE.YIELD_LIST],
+		mutationFn: (data: CreateYieldForm) => AgricultureService.createYield(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.YIELD_LIST],
+			}),
 	})
 }
 
+export function useEditYield() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.AGRICULTURE.YIELD_EDIT],
+		mutationFn: (data: CreateYieldForm & { id: string | number }) => {
+			const { id, ...formData } = data
+			return AgricultureService.editYield(formData, id)
+		},
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.YIELD_LIST],
+			}),
+	})
+}
+
+export function useDeleteYield() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.AGRICULTURE.YIELD_DELETE],
+		mutationFn: ({ id }: { id: string | number }) =>
+			AgricultureService.deleteYield(id),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.YIELD_LIST],
+			}),
+	})
+}
+
+// PLACEMENT
 export function useGetPlacement(year: number) {
 	return useQuery<GetPlacementForm[]>({
-		queryKey: ['get placement list', year],
-		queryFn: async () => {
-			return await AgricultureService.getPlacement({ year })
-		},
+		queryKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_LIST, year],
+		queryFn: () => AgricultureService.getPlacement({ year }),
+		enabled: !!year,
 	})
 }
 
 export function useCreatePlacemt() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create placement list'],
-		mutationFn: async (data: CreatePlacementForm) => {
-			return await AgricultureService.createPlacement(data)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get placement list'] })
-		},
-	})
-}
-export function useEditPlacemt() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['edit placement list'],
-		mutationFn: async (data: CreatePlacementForm & { id: string | number }) => {
-			const { id, ...formData } = data
-			return await AgricultureService.editPlacement(formData, id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get placement list'] })
-		},
-	})
-}
-export function useDeletePlacemt() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['delete placement list'],
-		mutationFn: async ({ id }: { id: string | number }) => {
-			return await AgricultureService.deletePlacement(id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get placement list'] })
-		},
+		mutationKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_CREATE],
+		mutationFn: (data: CreatePlacementForm) =>
+			AgricultureService.createPlacement(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_LIST],
+			}),
 	})
 }
 
+export function useEditPlacemt() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_EDIT],
+		mutationFn: (data: CreatePlacementForm & { id: string | number }) => {
+			const { id, ...formData } = data
+			return AgricultureService.editPlacement(formData, id)
+		},
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_LIST],
+			}),
+	})
+}
+
+export function useDeletePlacemt() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_DELETE],
+		mutationFn: ({ id }: { id: string | number }) =>
+			AgricultureService.deletePlacement(id),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.PLACEMENT_LIST],
+			}),
+	})
+}
+
+// DISTRICT
 export function useGetDistrict(year: number) {
 	return useQuery<GetDistrictForm[]>({
-		queryKey: ['get district list', year],
-		queryFn: async () => {
-			return await AgricultureService.getDistrict({ year })
-		},
+		queryKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_LIST, year],
+		queryFn: () => AgricultureService.getDistrict({ year }),
+		enabled: !!year,
 	})
 }
 
 export function useCreateDistrict() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create district'],
-		mutationFn: async (data: CreateDistrictForm) => {
-			return await AgricultureService.createDistrict(data)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get district list'] })
-		},
-	})
-}
-export function useEditDistrict() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['edit district'],
-		mutationFn: async (data: GetDistrictForm) => {
-			const { id, ...formData } = data
-			return await AgricultureService.editDistrict(formData, id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get district list'] })
-		},
-	})
-}
-export function useDeleteDistrict() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['delete district'],
-		mutationFn: async ({ id }: { id: string | number }) => {
-			return await AgricultureService.deleteDistrict(id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get district list'] })
-		},
+		mutationKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_CREATE],
+		mutationFn: (data: CreateDistrictForm) =>
+			AgricultureService.createDistrict(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_LIST],
+			}),
 	})
 }
 
+export function useEditDistrict() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_EDIT],
+		mutationFn: (data: GetDistrictForm) => {
+			const { id, ...formData } = data
+			return AgricultureService.editDistrict(formData, id)
+		},
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_LIST],
+			}),
+	})
+}
+
+export function useDeleteDistrict() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_DELETE],
+		mutationFn: ({ id }: { id: string | number }) =>
+			AgricultureService.deleteDistrict(id),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_LIST],
+			}),
+	})
+}
+
+// FIRMS
 export function useGetFirms() {
 	return useQuery<CreateFirms[]>({
-		queryKey: ['get firms list'],
-		queryFn: async () => {
-			return await AgricultureService.getFirms()
-		},
+		queryKey: [QUERY_KEYS.AGRICULTURE.FIRMS_LIST],
+		queryFn: () => AgricultureService.getFirms(),
 	})
 }
 
 export function useCreateFirms() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create firms'],
-		mutationFn: async (data: CreateFirms) => {
-			return await AgricultureService.createFirms(data)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get firms list'] })
-		},
+		mutationKey: [QUERY_KEYS.AGRICULTURE.FIRMS_CREATE],
+		mutationFn: (data: CreateFirms) => AgricultureService.createFirms(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.FIRMS_LIST],
+			}),
 	})
 }
+
 export function useEditFirms() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['edit firms'],
-		mutationFn: async (data: CreateFirms & { id: string | number }) => {
+		mutationKey: [QUERY_KEYS.AGRICULTURE.FIRMS_EDIT],
+		mutationFn: (data: CreateFirms & { id: string | number }) => {
 			const { id, ...formData } = data
-			return await AgricultureService.editFirms(formData, id)
+			return AgricultureService.editFirms(formData, id)
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get firms list'] })
-		},
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.FIRMS_LIST],
+			}),
 	})
 }
+
 export function useDeleteFirms() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create firms'],
-		mutationFn: async (id: string | number) => {
-			return await AgricultureService.deleteFirms(id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['get firms list'] })
-		},
+		mutationKey: [QUERY_KEYS.AGRICULTURE.FIRMS_DELETE],
+		mutationFn: (id: string | number) => AgricultureService.deleteFirms(id),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.AGRICULTURE.FIRMS_LIST],
+			}),
 	})
 }

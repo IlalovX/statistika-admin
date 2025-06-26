@@ -5,12 +5,11 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateTourismGroupData } from '../../../../hooks/useTourismGroups'
 import type { GetTourismSubGroupList } from '../../../../types/tourism-groups'
 
@@ -43,6 +42,7 @@ export function TourismGroupDataAddModal({
 		handleSubmit,
 		reset,
 		formState: { errors },
+		control,
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -83,22 +83,13 @@ export function TourismGroupDataAddModal({
 						helperText={errors.year?.message}
 						{...register('year', { valueAsNumber: true })}
 					/>
+					<MonthSelect
+						control={control}
+						name='month'
+						error={errors.month?.message}
+					/>
 					<TextField
-						select
-						label='Месяц'
-						fullWidth
-						error={!!errors.month}
-						helperText={errors.month?.message}
-						{...register('month')}
-					>
-						{MONTHS.map(month => (
-							<MenuItem key={month.value} value={month.value}>
-								{month.label}
-							</MenuItem>
-						))}
-					</TextField>
-					<TextField
-						label='Код страны (ISO alpha-3)'
+						label='Код страны '
 						fullWidth
 						error={!!errors.country_code}
 						helperText={errors.country_code?.message}

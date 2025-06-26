@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import UserMeReducer from '../features/slices/UserMeSlice'
 export const store = configureStore({
 	reducer: {
-		user_me : UserMeReducer
+		user_me: UserMeReducer,
 	},
 })
 

@@ -6,19 +6,18 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useEditInvestment } from '../../../../hooks/useInvestment'
-import { useGetRegionsList } from '../../../../hooks/useRegions'
 import type {
 	CreateInvestmentsForm,
 	GetInvestmentsForm,
 } from '../../../../types/investment'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const isNumeric = (val: string) =>
 	typeof val === 'string' &&
@@ -82,11 +81,10 @@ export default function InvestmentEditModal({
 		}
 	}, [data, reset])
 
-	const { data: regions = [] } = useGetRegionsList()
-	const { mutate } = useEditInvestment()
+	const { mutateAsync } = useEditInvestment()
 
 	const onSubmit = (formData: CreateInvestmentsForm) => {
-		mutate({ ...formData, id: data.id })
+		mutateAsync({ ...formData, id: data.id })
 		reset()
 		onClose()
 	}
@@ -115,51 +113,18 @@ export default function InvestmentEditModal({
 						</Grid>
 
 						<Grid size={6}>
-							<Controller
-								name='month'
+							<MonthSelect
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Месяц'
-										fullWidth
-										{...field}
-										error={!!errors.month}
-										helperText={errors.month?.message}
-									>
-										{MONTHS.map(month => (
-											<MenuItem key={month.value} value={month.value}>
-												{month.label}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='month'
+								error={errors.month?.message}
 							/>
 						</Grid>
 
 						<Grid size={6}>
-							<Controller
-								name='region_id'
+							<RegionSelect<CreateInvestmentsForm>
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Регион'
-										fullWidth
-										{...field}
-										error={!!errors.region_id}
-										helperText={errors.region_id?.message}
-									>
-										<MenuItem value='' disabled>
-											Выберите регион
-										</MenuItem>
-										{regions.map(region => (
-											<MenuItem key={region.id} value={region.id}>
-												{region.region_name}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='region_id'
+								error={errors.region_id?.message}
 							/>
 						</Grid>
 

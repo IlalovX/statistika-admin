@@ -6,12 +6,11 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useEditExternal } from '../../../../hooks/useTourism'
 import type {
 	CreateTourismExternalForm,
@@ -40,10 +39,9 @@ export function EditExternalDialog({
 	const {
 		register,
 		handleSubmit,
-		setValue,
-		watch,
 		formState: { errors },
 		reset,
+		control,
 	} = useForm<CreateTourismExternalForm>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -85,21 +83,11 @@ export function EditExternalDialog({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								select
-								label='Месяц'
-								fullWidth
-								value={watch('month')}
-								error={!!errors.month}
-								helperText={errors.month?.message}
-								onChange={e => setValue('month', Number(e.target.value))}
-							>
-								{MONTHS.map(month => (
-									<MenuItem key={month.value} value={month.value}>
-										{month.label}
-									</MenuItem>
-								))}
-							</TextField>
+							<MonthSelect
+								control={control}
+								name='month'
+								error={errors.month?.message}
+							/>
 						</Grid>
 						<Grid size={6}>
 							<TextField

@@ -6,14 +6,13 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateOutput } from '../../../../hooks/useInvestment'
 import type { CreateInvestmentOutputForm } from '../../../../types/investment'
-import { MONTHS } from '../../../../constants/months'
 
 const schema = z.object({
 	year: z.number().min(2000),
@@ -35,6 +34,7 @@ export default function OutputAddModal({
 		handleSubmit,
 		formState: { errors },
 		reset,
+		control,
 	} = useForm<CreateInvestmentOutputForm>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -68,20 +68,11 @@ export default function OutputAddModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								select
-								label='Месяц'
-								fullWidth
-								{...register('month', { valueAsNumber: true })}
-								error={!!errors.month}
-								helperText={errors.month?.message}
-							>
-								{MONTHS.map(month => (
-									<MenuItem key={month.value} value={month.value}>
-										{month.label}
-									</MenuItem>
-								))}
-							</TextField>
+							<MonthSelect
+								control={control}
+								name='month'
+								error={errors.month?.message}
+							/>
 						</Grid>
 						<Grid size={6}>
 							<TextField

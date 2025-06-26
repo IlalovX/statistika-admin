@@ -1,10 +1,15 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
-	Button, Dialog, DialogActions, DialogContent,
-	DialogTitle, Grid, TextField
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Grid,
+	TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateFirms } from '../../../../hooks/useAgriculture'
 import type { CreateFirms } from '../../../../types/agriculture'
 
@@ -13,7 +18,13 @@ const schema = z.object({
 	firm_count: z.number().min(0),
 })
 
-export default function FirmsAddModal({ open, onClose }: { open: boolean, onClose: () => void }) {
+export default function FirmsAddModal({
+	open,
+	onClose,
+}: {
+	open: boolean
+	onClose: () => void
+}) {
 	const { mutateAsync } = useCreateFirms()
 
 	const {
@@ -43,8 +54,8 @@ export default function FirmsAddModal({ open, onClose }: { open: boolean, onClos
 					<Grid container spacing={2}>
 						<Grid size={6}>
 							<TextField
-								label="Год"
-								type="number"
+								label='Год'
+								type='number'
 								fullWidth
 								error={!!errors.year}
 								helperText={errors.year?.message}
@@ -53,8 +64,8 @@ export default function FirmsAddModal({ open, onClose }: { open: boolean, onClos
 						</Grid>
 						<Grid size={6}>
 							<TextField
-								label="Количество фирм"
-								type="number"
+								label='Количество фирм'
+								type='number'
 								fullWidth
 								error={!!errors.firm_count}
 								helperText={errors.firm_count?.message}
@@ -65,7 +76,9 @@ export default function FirmsAddModal({ open, onClose }: { open: boolean, onClos
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={onClose}>Отмена</Button>
-					<Button type="submit" variant="contained">Добавить</Button>
+					<Button type='submit' variant='contained'>
+						Добавить
+					</Button>
 				</DialogActions>
 			</form>
 		</Dialog>

@@ -6,13 +6,12 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useEditInternal } from '../../../../hooks/useTourism'
 import type { EditTourismInternalForm } from '../../../../types/tourism'
 
@@ -35,7 +34,13 @@ function TourismInternalEditModal({
 	onClose: () => void
 	initialData: EditTourismInternalForm | null
 }) {
-	const { register, handleSubmit, reset, formState } = useForm<FormValues>({
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+		control,
+	} = useForm<FormValues>({
 		resolver: zodResolver(schema),
 	})
 
@@ -65,33 +70,24 @@ function TourismInternalEditModal({
 								label='Год'
 								type='number'
 								fullWidth
-								error={!!formState.errors.year}
-								helperText={formState.errors.year?.message}
+								error={!!errors.year}
+								helperText={errors.year?.message}
 								{...register('year')}
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								select
-								label='Месяц'
-								fullWidth
-								error={!!formState.errors.month}
-								helperText={formState.errors.month?.message}
-								{...register('month')}
-							>
-								{MONTHS.map(m => (
-									<MenuItem key={m.value} value={m.value}>
-										{m.label}
-									</MenuItem>
-								))}
-							</TextField>
+							<MonthSelect
+								control={control}
+								name='month'
+								error={errors.month?.message}
+							/>
 						</Grid>
 						<Grid size={6}>
 							<TextField
 								label='Прибыль (млн сум)'
 								fullWidth
-								error={!!formState.errors.tourism_profit}
-								helperText={formState.errors.tourism_profit?.message}
+								error={!!errors.tourism_profit}
+								helperText={errors.tourism_profit?.message}
 								{...register('tourism_profit')}
 							/>
 						</Grid>
@@ -100,8 +96,8 @@ function TourismInternalEditModal({
 								label='Туристы (чел.)'
 								type='number'
 								fullWidth
-								error={!!formState.errors.domestic_tourists}
-								helperText={formState.errors.domestic_tourists?.message}
+								error={!!errors.domestic_tourists}
+								helperText={errors.domestic_tourists?.message}
 								{...register('domestic_tourists')}
 							/>
 						</Grid>

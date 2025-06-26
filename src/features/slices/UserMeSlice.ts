@@ -6,7 +6,7 @@ type UserState = {
 }
 
 const initialState: UserState = {
-	user: JSON.parse(localStorage.getItem('user') as string),
+	user: JSON.parse(localStorage.getItem('stat_user') as string),
 }
 
 export const userMeSlice = createSlice({
@@ -15,11 +15,11 @@ export const userMeSlice = createSlice({
 	reducers: {
 		updateUserMe: (state, action: PayloadAction<UsersMeSuccessType>) => {
 			state.user = { ...action.payload }
-			localStorage.setItem('user', JSON.stringify(action.payload))
+			localStorage.setItem('stat_user', JSON.stringify(action.payload))
 		},
 		logout: state => {
 			state.user = null
-			localStorage.removeItem('user')
+			localStorage.removeItem('stat_user')
 		},
 	},
 })

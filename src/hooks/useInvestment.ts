@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEYS } from '../constants/queryKeys'
 import { InvestmentService } from '../services/investment.service'
 import type {
 	CreateInvestmentIndustryForm,
@@ -11,202 +12,203 @@ import type {
 	GetProductionDistrictForm,
 } from '../types/investment'
 
+// INDUSTRY
 export function useGetIndustryList() {
 	return useQuery<GetIndustryList[]>({
-		queryKey: ['investment industry list'],
-		queryFn: async () => {
-			const data = await InvestmentService.getIndustry()
-			return data
-		},
+		queryKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_LIST],
+		queryFn: () => InvestmentService.getIndustry(),
 	})
 }
+
 export function useCreateIndustry() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create industry'],
-		mutationFn: async (data: CreateInvestmentIndustryForm) => {
-			return await InvestmentService.createIndustry(data)
-		},
+		mutationKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_CREATE],
+		mutationFn: (data: CreateInvestmentIndustryForm) =>
+			InvestmentService.createIndustry(data),
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ['investment industry list'] }),
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_LIST],
+			}),
 	})
 }
+
 export function useEditIndustry() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['edit industry'],
-		mutationFn: async (
+		mutationKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_EDIT],
+		mutationFn: (
 			data: CreateInvestmentIndustryForm & { id: string | number }
 		) => {
 			const { id, ...formData } = data
-			return await InvestmentService.editIndustry(formData, id)
+			return InvestmentService.editIndustry(formData, id)
 		},
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ['investment industry list'] }),
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_LIST],
+			}),
 	})
 }
+
 export function useDeleteIndustry() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['delet industry'],
-		mutationFn: async ({ id }: { id: string | number }) => {
-			return await InvestmentService.deleteIndustry(id)
-		},
+		mutationKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_DELETE],
+		mutationFn: ({ id }: { id: string | number }) =>
+			InvestmentService.deleteIndustry(id),
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ['investment industry list'] }),
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.INDUSTRY_LIST],
+			}),
 	})
 }
 
+// OUTPUT
 export function useGetOutput() {
 	return useQuery<GetOutputList[]>({
-		queryKey: ['output list'],
-		queryFn: async () => {
-			return await InvestmentService.getOutput()
-		},
+		queryKey: [QUERY_KEYS.INVESTMENT.OUTPUT_LIST],
+		queryFn: () => InvestmentService.getOutput(),
 	})
 }
+
 export function useCreateOutput() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create output'],
-		mutationFn: async (data: CreateInvestmentOutputForm) => {
-			return await InvestmentService.createOutput(data)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['output list'] })
-		},
-	})
-}
-export function useEditOutput() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['edit output'],
-		mutationFn: async (
-			data: CreateInvestmentOutputForm & { id: string | number }
-		) => {
-			const { id, ...formData } = data
-			return await InvestmentService.editOutput(formData, id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['output list'] })
-		},
-	})
-}
-export function useDeleteOutput() {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationKey: ['create output'],
-		mutationFn: async (id: string | number) => {
-			return await InvestmentService.deleteOutput(id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['output list'] })
-		},
+		mutationKey: [QUERY_KEYS.INVESTMENT.OUTPUT_CREATE],
+		mutationFn: (data: CreateInvestmentOutputForm) =>
+			InvestmentService.createOutput(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.OUTPUT_LIST],
+			}),
 	})
 }
 
+export function useEditOutput() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.INVESTMENT.OUTPUT_EDIT],
+		mutationFn: (
+			data: CreateInvestmentOutputForm & { id: string | number }
+		) => {
+			const { id, ...formData } = data
+			return InvestmentService.editOutput(formData, id)
+		},
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.OUTPUT_LIST],
+			}),
+	})
+}
+
+export function useDeleteOutput() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.INVESTMENT.OUTPUT_DELETE],
+		mutationFn: (id: string | number) => InvestmentService.deleteOutput(id),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.OUTPUT_LIST],
+			}),
+	})
+}
+
+// INVESTMENT
 export function useGetInvestment() {
 	return useQuery<GetInvestmentsForm[]>({
-		queryKey: ['investment list'],
-		queryFn: async () => {
-			return await InvestmentService.getInvestments()
-		},
+		queryKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_LIST],
+		queryFn: () => InvestmentService.getInvestments(),
 	})
 }
 
 export function useCreateInvestment() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['create investment'],
-		mutationFn: async (data: CreateInvestmentsForm) => {
-			return await InvestmentService.createInvestments(data)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['investment list'] })
-		},
+		mutationKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_CREATE],
+		mutationFn: (data: CreateInvestmentsForm) =>
+			InvestmentService.createInvestments(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_LIST],
+			}),
 	})
 }
+
 export function useEditInvestment() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['edit investment'],
-		mutationFn: async (
-			data: CreateInvestmentsForm & { id: string | number }
-		) => {
+		mutationKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_EDIT],
+		mutationFn: (data: CreateInvestmentsForm & { id: string | number }) => {
 			const { id, ...formData } = data
-			return await InvestmentService.editInvestments(formData, id)
+			return InvestmentService.editInvestments(formData, id)
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['investment list'] })
-		},
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_LIST],
+			}),
 	})
 }
+
 export function useDeleteInvestment() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['delete investment'],
-		mutationFn: async ({ id }: { id: string | number }) => {
-			return await InvestmentService.deleteInvestments(id)
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['investment list'] })
-		},
+		mutationKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_DELETE],
+		mutationFn: ({ id }: { id: string | number }) =>
+			InvestmentService.deleteInvestments(id),
+		onSuccess: () =>
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.INVESTMENT.INVESTMENT_LIST],
+			}),
 	})
 }
 
+// PRODUCTION DISTRICT
 export function useGetProductionDistrict() {
 	return useQuery<GetProductionDistrictForm[]>({
-		queryKey: ['get production district list'],
-		queryFn: async () => {
-			return await InvestmentService.getProductionDistrict()
-		},
+		queryKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_LIST],
+		queryFn: () => InvestmentService.getProductionDistrict(),
 	})
 }
+
 export function useCreateProductionDistrict() {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationKey: ['create production district'],
-		mutationFn: async (data: CreateProductionDistrictForm) => {
-			return await InvestmentService.createProductionDistrict(data)
-		},
-		onSuccess: () => {
+		mutationKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_CREATE],
+		mutationFn: (data: CreateProductionDistrictForm) =>
+			InvestmentService.createProductionDistrict(data),
+		onSuccess: () =>
 			queryClient.invalidateQueries({
-				queryKey: ['get production district list'],
-			})
-		},
+				queryKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_LIST],
+			}),
 	})
 }
+
 export function useEditProductionDistrict() {
 	const queryClient = useQueryClient()
-
 	return useMutation({
-		mutationKey: ['edit production district'],
-		mutationFn: async (
+		mutationKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_EDIT],
+		mutationFn: (
 			data: CreateProductionDistrictForm & { id: string | number }
 		) => {
 			const { id, ...formData } = data
-			return await InvestmentService.editProductionDistrict(formData, id)
+			return InvestmentService.editProductionDistrict(formData, id)
 		},
-		onSuccess: () => {
+		onSuccess: () =>
 			queryClient.invalidateQueries({
-				queryKey: ['get production district list'],
-			})
-		},
+				queryKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_LIST],
+			}),
 	})
 }
-export function useDeletProductionDistrict() {
-	const queryClient = useQueryClient()
 
+export function useDeleteProductionDistrict() {
+	const queryClient = useQueryClient()
 	return useMutation({
-		mutationKey: ['delete production district'],
-		mutationFn: async ({ id }: { id: string | number }) => {
-			return await InvestmentService.deleteProductionDistrict(id)
-		},
-		onSuccess: () => {
+		mutationKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_DELETE],
+		mutationFn: ({ id }: { id: string | number }) =>
+			InvestmentService.deleteProductionDistrict(id),
+		onSuccess: () =>
 			queryClient.invalidateQueries({
-				queryKey: ['get production district list'],
-			})
-		},
+				queryKey: [QUERY_KEYS.INVESTMENT.PRODUCTION_DISTRICT_LIST],
+			}),
 	})
 }

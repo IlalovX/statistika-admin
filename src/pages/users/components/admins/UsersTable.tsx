@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
 import {
 	IconButton,
 	Paper,
@@ -10,8 +9,9 @@ import {
 	TableHead,
 	TableRow,
 } from '@mui/material'
-import { useCategories } from '../../context/CategoriesContext'
-import { useGetUsersList } from '../../hooks/useUsers'
+import { useCategories } from '../../../../context/CategoriesContext'
+import { useGetUsersList } from '../../../../hooks/useUsers'
+import UsersEditModal from './UsersEditModal'
 
 function UsersTable() {
 	const categories = useCategories()
@@ -43,9 +43,7 @@ function UsersTable() {
 								<TableCell>{user.region}</TableCell>
 								<TableCell>{getCategoryName(user.category)}</TableCell>
 								<TableCell align='center'>
-									<IconButton>
-										<EditIcon />
-									</IconButton>
+									<UsersEditModal user={user} />
 									<IconButton color='error'>
 										<DeleteIcon />
 									</IconButton>

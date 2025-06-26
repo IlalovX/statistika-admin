@@ -1,4 +1,3 @@
-import LanguageIcon from '@mui/icons-material/Language'
 import PersonIcon from '@mui/icons-material/Person'
 import { IconButton, Tooltip, Typography } from '@mui/material'
 import { NavLink } from 'react-router'
@@ -22,10 +21,6 @@ function Header() {
 					</IconButton>
 				</Tooltip>
 
-				{/* <ThemeToggle /> */}
-				<IconButton>
-					<LanguageIcon className='text-gray-600 ' />
-				</IconButton>
 				<NavLink to='/profile'>
 					{({ isActive }) => (
 						<IconButton>

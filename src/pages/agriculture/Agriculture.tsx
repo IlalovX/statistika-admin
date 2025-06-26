@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material'
 import DistrictTable from './components/district/DistrictTable'
+import FirmsTable from './components/firms/FirmsTable'
 import PlacementTable from './components/placement/PlacementTable'
 import YieldTable from './components/yield/YieldTable'
-import FirmsTable from './components/firms/FirmsTable'
 
 function Agriculture() {
 	return (
@@ -21,7 +21,7 @@ function Agriculture() {
 			</section>
 			<section className='!space-y-5'>
 				<Typography variant='h4'>Firms</Typography>
-				<FirmsTable/>
+				<FirmsTable />
 			</section>
 		</div>
 	)

@@ -5,10 +5,12 @@ export interface UsersSuccessType {
 	region: string
 	category: string
 }
-export interface UserCreateForm {
+export interface AdminCreateForm {
 	name: string
 	username: string
 	password: string
 	region_id: number
 	category_id: string
 }
+
+

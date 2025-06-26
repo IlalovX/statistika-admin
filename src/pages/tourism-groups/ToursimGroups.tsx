@@ -1,7 +1,6 @@
 import { useQueries } from '@tanstack/react-query'
 import { useGetTourismGroupList } from '../../hooks/useTourismGroups'
 import { TourismGroupsService } from '../../services/tourism-groups.service'
-import type { GetTourismSubGroupList } from '../../types/tourism-groups'
 import TourismGroupDataTable from './components/group-data/TourismGroupDataTable'
 import TourismGroupTable from './components/group/TourismGroupTable'
 import TourismSubGroupTable from './components/sub-group/TourismSubGroupTable'
@@ -9,7 +8,6 @@ import TourismSubGroupTable from './components/sub-group/TourismSubGroupTable'
 export default function TourismGroupsPage() {
 	const { data: groups = [] } = useGetTourismGroupList()
 
-	// массив запросов для подгрупп каждой группы
 	const subgroupQueries = useQueries({
 		queries: groups.map(group => ({
 			queryKey: ['subgroups', group.id],
@@ -39,13 +37,10 @@ export default function TourismGroupsPage() {
 						return (
 							<div key={group.id} className='space-y-4'>
 								<h2 className='text-lg font-semibold'>Группа: {group.name}</h2>
-								{subgroups.map((subgroup: GetTourismSubGroupList) => (
-									<TourismGroupDataTable
-										key={subgroup.id}
-										groupId={group.id}
-										subgroup={subgroup}
-									/>
-								))}
+								<TourismGroupDataTable
+									groupId={group.id}
+									subgroup={subgroups}
+								/>
 							</div>
 						)
 					})}

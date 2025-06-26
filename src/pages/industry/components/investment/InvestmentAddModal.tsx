@@ -6,15 +6,14 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useCreateInvestment } from '../../../../hooks/useInvestment'
-import { useGetRegionsList } from '../../../../hooks/useRegions'
 import type { CreateInvestmentsForm } from '../../../../types/investment'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const schema = z.object({
 	country_code: z.string().min(1),
@@ -23,7 +22,7 @@ const schema = z.object({
 	region_id: z.number(),
 	project_name: z.string().min(1),
 	project_count: z.number(),
-	project_workplaces: z.number(),	
+	project_workplaces: z.number(),
 	investment_amount: z.string().min(1),
 })
 
@@ -35,13 +34,13 @@ export default function InvestmentAddModal({
 	onClose: () => void
 }) {
 	const { mutateAsync } = useCreateInvestment()
-	const { data: regions = [] } = useGetRegionsList()
 
 	const {
 		register,
 		handleSubmit,
 		setValue,
 		watch,
+		control,
 		formState: { errors },
 		reset,
 	} = useForm<CreateInvestmentsForm>({
@@ -74,55 +73,19 @@ export default function InvestmentAddModal({
 						</Grid>
 
 						<Grid size={6}>
-							<TextField
-								select
-								label='Месяц'
-								fullWidth
-								{...register('month')}
-								value={watchedValues.month || ''}
-								error={!!errors?.month}
-								helperText={errors?.month?.message}
-								onChange={e => setValue('month', +e.target.value)}
-							>
-								<MenuItem value='' disabled>
-									Выберите Месяц
-								</MenuItem>
-								{MONTHS && MONTHS.length > 0 ? (
-									MONTHS.map(month => (
-										<MenuItem key={month.value} value={month.value}>
-											{month.label}
-										</MenuItem>
-									))
-								) : (
-									<MenuItem disabled>Загрузка месяц...</MenuItem>
-								)}
-							</TextField>
+							<MonthSelect
+								control={control}
+								name='month'
+								error={errors.month?.message}
+							/>
 						</Grid>
 
 						<Grid size={6}>
-							<TextField
-								select
-								label='Регион'
-								fullWidth
-								{...register('region_id')}
-								value={watchedValues.region_id || ''}
-								error={!!errors?.region_id}
-								helperText={errors?.region_id?.message}
-								onChange={e => setValue('region_id', +e.target.value)}
-							>
-								<MenuItem value='' disabled>
-									Выберите регион
-								</MenuItem>
-								{regions && regions.length > 0 ? (
-									regions.map(region => (
-										<MenuItem key={region.id} value={String(region.id)}>
-											{region.region_name}
-										</MenuItem>
-									))
-								) : (
-									<MenuItem disabled>Загрузка регионов...</MenuItem>
-								)}
-							</TextField>
+							<RegionSelect<CreateInvestmentsForm>
+								control={control}
+								name='region_id'
+								error={errors.region_id?.message}
+							/>
 						</Grid>
 
 						<Grid size={6}>

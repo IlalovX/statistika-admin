@@ -1,11 +1,11 @@
 import DownloadIcon from '@mui/icons-material/Download'
 import { Button } from '@mui/material'
-import { axiosClassic } from '../../api/interceptors'
+import { axiosWithAuth } from '../../api/interceptors'
 
 const DownloadProjectsExcelButton = () => {
 	const handleDownload = async () => {
 		try {
-			const response = await axiosClassic.get(
+			const response = await axiosWithAuth.get(
 				'/projects/download', // путь к API
 				{
 					responseType: 'blob', // обязательно

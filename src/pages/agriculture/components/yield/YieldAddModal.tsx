@@ -1,4 +1,3 @@
-// YieldAddModal.tsx
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -10,9 +9,9 @@ import {
 	MenuItem,
 	TextField,
 } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { MONTHS } from '../../../../constants/months'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateYield } from '../../../../hooks/useAgriculture'
 import type { CreateYieldForm } from '../../../../types/agriculture'
 
@@ -79,18 +78,10 @@ export default function YieldAddModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<Controller
-								name='month'
+							<MonthSelect
 								control={control}
-								render={({ field }) => (
-									<TextField select label='Месяц' fullWidth {...field}>
-										{MONTHS.map(month => (
-											<MenuItem key={month.value} value={month.value}>
-												{month.label}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='month'
+								error={errors.month?.message}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -113,12 +104,22 @@ export default function YieldAddModal({
 						</Grid>
 						<Grid size={6}>
 							<TextField
-								label='Тип (export/import)'
+								select
+								label='Тип'
 								fullWidth
 								error={!!errors.type}
 								helperText={errors.type?.message}
 								{...register('type')}
-							/>
+								defaultValue=''
+							>
+								<MenuItem value='' disabled>
+									Выберите тип
+								</MenuItem>
+								<MenuItem value='export'>Экспорт</MenuItem>
+								<MenuItem value='import'>Импорт</MenuItem>
+								<MenuItem value='yield'>Урожайность</MenuItem>
+								<MenuItem value='profit'>Прибыль</MenuItem>
+							</TextField>
 						</Grid>
 						<Grid size={6}>
 							<TextField

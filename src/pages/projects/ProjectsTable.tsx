@@ -131,11 +131,12 @@ export function ProjectTable({
 								</TableCell>
 								<TableCell>{project.responsible_party}</TableCell>
 								<TableCell>{project.project_status}</TableCell>
-								<TableCell>{project.overall_status}</TableCell>
-								<TableCell align='right'>
+								<TableCell>
 									<IconButton onClick={() => handleOpen(project, 'more')}>
 										<InfoIcon color='primary' />
 									</IconButton>
+								</TableCell>
+								<TableCell align='right' width={120}>
 									<IconButton onClick={() => handleOpen(project, 'edit')}>
 										<EditIcon />
 									</IconButton>

@@ -1,5 +1,7 @@
+import { Delete, Edit } from '@mui/icons-material'
 import {
 	Button,
+	IconButton,
 	MenuItem,
 	Paper,
 	Select,
@@ -9,9 +11,12 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	Tooltip,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import {
+	useDeleteTourismSubGroup,
 	useGetTourismGroupList,
 	useGetTourismSubGroupList,
 } from '../../../../hooks/useTourismGroups'
@@ -21,6 +26,7 @@ import type {
 } from '../../../../types/tourism-groups'
 import { TourismSubGroupAddModal } from './TourismSubGroupAddModal'
 import { TourismSubGroupEditModal } from './TourismSubGroupEditModal'
+// ...
 
 export default function TourismSubGroupTable() {
 	const [editingSubgroup, setEditingSubgroup] =
@@ -33,6 +39,27 @@ export default function TourismSubGroupTable() {
 	const { data: subgroups = [], refetch } = useGetTourismSubGroupList(
 		selectedGroup?.id ?? ''
 	)
+
+	const { mutate: deleteSubGroup } = useDeleteTourismSubGroup()
+
+	// 🆕 Выбираем первую группу после загрузки данных
+	useEffect(() => {
+		if (!selectedGroup && groups && groups.length > 0) {
+			setSelectedGroup(groups[0])
+		}
+	}, [groups, selectedGroup])
+
+	const handleDelete = (id: number | string) => {
+		deleteSubGroup(id, {
+			onSuccess: () => {
+				toast.success('Удалено ✅')
+				refetch()
+			},
+			onError: () => {
+				toast.error('Ошибка при удалении ❌')
+			},
+		})
+	}
 
 	return (
 		<div>
@@ -82,13 +109,22 @@ export default function TourismSubGroupTable() {
 									{new Date(sg.created_at).toLocaleDateString()}
 								</TableCell>
 								<TableCell align='right'>
-									<Button
-										variant='outlined'
-										size='small'
-										onClick={() => setEditingSubgroup(sg)}
-									>
-										Редактировать
-									</Button>
+									<Tooltip title='Редактировать'>
+										<IconButton
+											color='primary'
+											onClick={() => setEditingSubgroup(sg)}
+										>
+											<Edit />
+										</IconButton>
+									</Tooltip>
+									<Tooltip title='Удалить'>
+										<IconButton
+											color='error'
+											onClick={() => handleDelete(sg.id)}
+										>
+											<Delete />
+										</IconButton>
+									</Tooltip>
 								</TableCell>
 							</TableRow>
 						))}

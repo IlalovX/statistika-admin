@@ -1,5 +1,8 @@
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import {
 	Button,
+	IconButton,
 	Paper,
 	Table,
 	TableBody,
@@ -7,20 +10,40 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	Tooltip,
 } from '@mui/material'
 import { useState } from 'react'
-import { useGetTourismGroupList } from '../../../../hooks/useTourismGroups'
+import { toast } from 'sonner'
+import {
+	useDeleteTourismGroup,
+	useGetTourismGroupList,
+} from '../../../../hooks/useTourismGroups'
 import type { GetTourismGroupList } from '../../../../types/tourism-groups'
 import TourismGroupAddModal from './TourismGroupAddModal'
 import TourismGroupEditModal from './TourismGroupEditModal'
 
 export default function TourismGroupTable() {
 	const { data: groups, refetch } = useGetTourismGroupList()
+	const { mutate: deleteGroup } = useDeleteTourismGroup()
 
 	const [editingGroup, setEditingGroup] = useState<GetTourismGroupList | null>(
 		null
 	)
 	const [openAdd, setOpenAdd] = useState(false)
+
+	const handleDelete = (id: number | string) => {
+		if (confirm('Вы уверены, что хотите удалить эту группу?')) {
+			deleteGroup(id, {
+				onSuccess: () => {
+					toast.success('Группа удалена ✅')
+					refetch()
+				},
+				onError: () => {
+					toast.error('Ошибка при удалении ❌')
+				},
+			})
+		}
+	}
 
 	return (
 		<div>
@@ -51,13 +74,24 @@ export default function TourismGroupTable() {
 								<TableCell>{group.id}</TableCell>
 								<TableCell>{group.name}</TableCell>
 								<TableCell align='right'>
-									<Button
-										variant='outlined'
-										size='small'
-										onClick={() => setEditingGroup(group)}
-									>
-										Редактировать
-									</Button>
+									<Tooltip title='Редактировать'>
+										<IconButton
+											aria-label='edit'
+											color='primary'
+											onClick={() => setEditingGroup(group)}
+										>
+											<EditIcon />
+										</IconButton>
+									</Tooltip>
+									<Tooltip title='Удалить'>
+										<IconButton
+											aria-label='delete'
+											color='error'
+											onClick={() => handleDelete(group.id)}
+										>
+											<DeleteIcon />
+										</IconButton>
+									</Tooltip>
 								</TableCell>
 							</TableRow>
 						))}

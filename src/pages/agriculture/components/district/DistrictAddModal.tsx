@@ -6,17 +6,18 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
+import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useCreateDistrict } from '../../../../hooks/useAgriculture'
-import { useGetRegionsList } from '../../../../hooks/useRegions'
 import type { CreateDistrictForm } from '../../../../types/agriculture'
 
 const schema = z.object({
 	year: z.coerce.number().min(2000, 'Год должен быть не меньше 2000'),
+	month: z.number().min(1).max(12),
 	region_id: z.coerce.number().min(1, 'Регион обязателен'),
 	product: z.string().min(1, 'Введите продукт'),
 	weight: z.coerce.number().min(0, 'Введите корректный вес'),
@@ -34,7 +35,6 @@ export default function AddDistrictModal({
 	onClose: () => void
 }) {
 	const { mutateAsync } = useCreateDistrict()
-	const { data: regions = [] } = useGetRegionsList()
 
 	const {
 		register,
@@ -44,16 +44,6 @@ export default function AddDistrictModal({
 		reset,
 	} = useForm<CreateDistrictForm>({
 		resolver: zodResolver(schema),
-		defaultValues: {
-			year: new Date().getFullYear(),
-			region_id: 0,
-			product: '',
-			weight: 0,
-			area: 0,
-			export: 0,
-			local_market: 0,
-			water_limit: 0,
-		},
 	})
 
 	const onSubmit = async (data: CreateDistrictForm) => {
@@ -80,25 +70,18 @@ export default function AddDistrictModal({
 						</Grid>
 
 						<Grid size={6}>
-							<Controller
-								name='region_id'
+							<RegionSelect<CreateDistrictForm>
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Регион'
-										fullWidth
-										{...field}
-										error={!!errors.region_id}
-										helperText={errors.region_id?.message}
-									>
-										{regions.map(region => (
-											<MenuItem key={region.id} value={region.id}>
-												{region.region_name}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='region_id'
+								error={errors.region_id?.message}
+							/>
+						</Grid>
+
+						<Grid size={6}>
+							<MonthSelect<CreateDistrictForm>
+								control={control}
+								name='month'
+								error={errors.month?.message}
 							/>
 						</Grid>
 

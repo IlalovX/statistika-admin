@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateExternal } from '../../../../hooks/useTourism'
 import type { CreateTourismExternalForm } from '../../../../types/tourism'
 
@@ -32,7 +33,13 @@ export default function ToursimExternalAddModal({
 	open: boolean
 	onClose: () => void
 }) {
-	const { register, handleSubmit, reset } = useForm<FormValues>({
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+		control,
+	} = useForm<FormValues>({
 		resolver: zodResolver(schema),
 	})
 	const create = useCreateExternal()
@@ -61,11 +68,10 @@ export default function ToursimExternalAddModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								label='Месяц'
-								type='number'
-								fullWidth
-								{...register('month')}
+							<MonthSelect
+								control={control}
+								name='month'
+								error={errors.month?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

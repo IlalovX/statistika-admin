@@ -1,5 +1,3 @@
-'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {

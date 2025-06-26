@@ -43,6 +43,7 @@ export interface GetPlacementForm {
 
 export interface CreateDistrictForm {
 	year: number
+	month: number
 	region_id: number
 	product: string
 	weight: number
@@ -65,7 +66,7 @@ export interface GetDistrictForm {
 }
 
 export interface CreateFirms {
-	id: string | number
+	id?: string | number
 	year: number
 	firm_count: number
 }

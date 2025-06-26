@@ -6,14 +6,13 @@ import {
 	DialogContent,
 	DialogTitle,
 	Grid,
-	MenuItem,
 	TextField,
 } from '@mui/material'
 import { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useEditDistrict } from '../../../../hooks/useAgriculture'
-import { useGetRegionsList } from '../../../../hooks/useRegions'
 import type {
 	CreateDistrictForm,
 	GetDistrictForm,
@@ -40,7 +39,6 @@ export default function DistrictEditModal({
 	data: GetDistrictForm | null
 }) {
 	const { mutateAsync } = useEditDistrict()
-	const { data: regions = [] } = useGetRegionsList()
 
 	const {
 		register,
@@ -109,28 +107,10 @@ export default function DistrictEditModal({
 						</Grid>
 
 						<Grid size={6}>
-							<Controller
-								name='region_id'
+							<RegionSelect<CreateDistrictForm>
 								control={control}
-								render={({ field }) => (
-									<TextField
-										select
-										label='Регион'
-										fullWidth
-										error={!!errors.region_id}
-										helperText={errors.region_id?.message}
-										{...field}
-									>
-										<MenuItem value='' disabled>
-											Выберите регион
-										</MenuItem>
-										{regions.map(region => (
-											<MenuItem key={region.id} value={region.id}>
-												{region.region_name}
-											</MenuItem>
-										))}
-									</TextField>
-								)}
+								name='region_id'
+								error={errors.region_id?.message}
 							/>
 						</Grid>
 

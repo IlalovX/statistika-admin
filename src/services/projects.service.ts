@@ -1,4 +1,4 @@
-import { axiosClassic, axiosWithAuth } from '../api/interceptors'
+import { axiosWithAuth } from '../api/interceptors'
 import type { CreateProjectForm, EditProjectForm } from '../types/projects'
 
 export const ProjectsService = {
@@ -15,23 +15,23 @@ export const ProjectsService = {
 		return res.data.data
 	},
 	async getProjectList() {
-		const res = await axiosClassic.get('/projects/list')
+		const res = await axiosWithAuth.get('/projects/list')
 		return res.data.data
 	},
 	async getProjectDetail(id: string | number) {
-		const res = await axiosClassic.get(`/projects/get/${id}`)
+		const res = await axiosWithAuth.get(`/projects/get/${id}`)
 		return res.data.data
 	},
 	async getProjectsOverallStatus(id: string | number) {
-		const res = await axiosClassic.get(`/projects/overall-status/${id}`)
+		const res = await axiosWithAuth.get(`/projects/overall-status/${id}`)
 		return res.data.data
 	},
 	async getProjectsLastUpdate() {
-		const res = await axiosClassic.get('/projects/last_update')
+		const res = await axiosWithAuth.get('/projects/last_update')
 		return res.data.data
 	},
 	async getProjectsSearch() {
-		const res = await axiosClassic.get('/projects/search')
+		const res = await axiosWithAuth.get('/projects/search')
 		return res.data.data
 	},
 }
