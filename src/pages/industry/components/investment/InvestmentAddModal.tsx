@@ -10,10 +10,10 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useCreateInvestment } from '../../../../hooks/useInvestment'
 import type { CreateInvestmentsForm } from '../../../../types/investment'
-import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const schema = z.object({
 	country_code: z.string().min(1),
@@ -38,16 +38,12 @@ export default function InvestmentAddModal({
 	const {
 		register,
 		handleSubmit,
-		setValue,
-		watch,
 		control,
 		formState: { errors },
 		reset,
 	} = useForm<CreateInvestmentsForm>({
 		resolver: zodResolver(schema),
 	})
-
-	const watchedValues = watch()
 
 	const onSubmit = async (data: CreateInvestmentsForm) => {
 		await mutateAsync(data)

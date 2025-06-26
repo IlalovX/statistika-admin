@@ -3,11 +3,7 @@ import { toast } from 'sonner'
 import { QUERY_KEYS } from '../constants/queryKeys'
 import { UserService } from '../services/user.service'
 import type { DetailSuccessfully } from '../types/common'
-import type {
-	AdminCreateForm,
-	ClientCreateForm,
-	UsersSuccessType,
-} from '../types/users'
+import type { AdminCreateForm, UsersSuccessType } from '../types/users'
 
 export function useGetUsersList() {
 	return useQuery<UsersSuccessType[]>({
@@ -42,18 +38,6 @@ export function useEditUser() {
 		},
 		onSuccess: () => {
 			toast.success('Успешно изменено ✅')
-			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS.LIST] })
-		},
-	})
-}
-
-export function useCreateClient() {
-	const queryClient = useQueryClient()
-	return useMutation<DetailSuccessfully, Error, ClientCreateForm>({
-		mutationKey: [QUERY_KEYS.USERS.CREATE_CLIENT],
-		mutationFn: data => UserService.createClient(data),
-		onSuccess: () => {
-			toast.success('Успешно создано ✅')
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS.LIST] })
 		},
 	})

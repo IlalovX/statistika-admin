@@ -138,7 +138,7 @@ export function useEditDistrict() {
 		mutationKey: [QUERY_KEYS.AGRICULTURE.DISTRICT_EDIT],
 		mutationFn: (data: GetDistrictForm) => {
 			const { id, ...formData } = data
-			return AgricultureService.editDistrict(formData, id)
+			return AgricultureService.editDistrict(formData, id as number)
 		},
 		onSuccess: () =>
 			queryClient.invalidateQueries({

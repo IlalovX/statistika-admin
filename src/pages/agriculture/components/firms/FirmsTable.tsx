@@ -24,18 +24,12 @@ export default function FirmsTable() {
 	const [addOpen, setAddOpen] = useState(false)
 	const [editOpen, setEditOpen] = useState(false)
 	const [selected, setSelected] = useState<
-		(CreateFirms & { id: number }) | null
+		(CreateFirms & { id: string | number }) | null
 	>(null)
 
 	return (
 		<div>
-			<Box
-				display='flex'
-				alignItems='center'
-				justifyContent='flex-end'
-				mb={2}
-			>
-
+			<Box display='flex' alignItems='center' justifyContent='flex-end' mb={2}>
 				<Button variant='contained' onClick={() => setAddOpen(true)}>
 					Добавить
 				</Button>
@@ -65,13 +59,16 @@ export default function FirmsTable() {
 									<TableCell align='right'>
 										<IconButton
 											onClick={() => {
-												// setSelected(row)
+												setSelected({ ...row, id: Number(row.id) })
+
+												// ✅ передаём выбранную строку
 												setEditOpen(true)
 											}}
 										>
 											<Edit />
 										</IconButton>
-										<IconButton onClick={() => deleteItem(row.id)}>
+
+										<IconButton onClick={() => deleteItem(row.id as number)}>
 											<Delete color='error' />
 										</IconButton>
 									</TableCell>
@@ -86,7 +83,7 @@ export default function FirmsTable() {
 			<FirmsEditModal
 				open={editOpen}
 				onClose={() => setEditOpen(false)}
-				data={selected}
+				data={selected ? { ...selected, id: Number(selected.id) } : null}
 			/>
 		</div>
 	)

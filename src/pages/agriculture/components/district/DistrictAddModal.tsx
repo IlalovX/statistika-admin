@@ -17,7 +17,7 @@ import type { CreateDistrictForm } from '../../../../types/agriculture'
 
 const schema = z.object({
 	year: z.coerce.number().min(2000, 'Год должен быть не меньше 2000'),
-	month: z.number().min(1).max(12),
+	month: z.number().min(1).max(12).optional(),
 	region_id: z.coerce.number().min(1, 'Регион обязателен'),
 	product: z.string().min(1, 'Введите продукт'),
 	weight: z.coerce.number().min(0, 'Введите корректный вес'),

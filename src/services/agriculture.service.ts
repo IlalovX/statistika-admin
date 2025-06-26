@@ -4,6 +4,7 @@ import type {
 	CreateFirms,
 	CreatePlacementForm,
 	CreateYieldForm,
+	GetDistrictForm,
 } from '../types/agriculture'
 
 export const AgricultureService = {
@@ -47,7 +48,7 @@ export const AgricultureService = {
 		const res = await axiosWithAuth.post('/agriculture/district', data)
 		return res.data.data
 	},
-	async editDistrict(data: CreateDistrictForm, id: string | number) {
+	async editDistrict(data: GetDistrictForm, id:  number) {
 		const res = await axiosWithAuth.put(`/agriculture/district/${id}`, data)
 		return res.data.data
 	},

@@ -109,7 +109,9 @@ export default function DistrictTable() {
 										>
 											<Edit />
 										</IconButton>
-										<IconButton onClick={() => deleteItem({ id: row.id })}>
+										<IconButton
+											onClick={() => deleteItem({ id: row.id as number })}
+										>
 											<Delete color='error' />
 										</IconButton>
 									</TableCell>

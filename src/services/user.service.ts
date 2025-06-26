@@ -1,5 +1,5 @@
 import { axiosWithAuth } from '../api/interceptors'
-import type { AdminCreateForm, ClientCreateForm } from '../types/users'
+import type { AdminCreateForm } from '../types/users'
 
 export const UserService = {
 	async getUserList() {
@@ -10,12 +10,8 @@ export const UserService = {
 		const res = await axiosWithAuth.post('/admin/new_admin', data)
 		return res.data.data
 	},
-	async editAdmin(data:AdminCreateForm,id:string|number){
+	async editAdmin(data: AdminCreateForm, id: string | number) {
 		const res = await axiosWithAuth.post(`/admin/update/${id}`, data)
-		return res.data.data
-	},
-	async createClient(data: ClientCreateForm) {
-		const res = await axiosWithAuth.post('/admin/new_client', data)
 		return res.data.data
 	},
 }
