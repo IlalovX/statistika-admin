@@ -8,19 +8,19 @@ function Industry() {
 	return (
 		<div className='space-y-10'>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Industry</Typography>
+				<Typography variant='h4'>Промышленность</Typography>
 				<IndustryTable />
 			</section>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Output</Typography>
+				<Typography variant='h4'>Объем промышленной продукции</Typography>
 				<OutputTable />
 			</section>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Investment</Typography>
+				<Typography variant='h4'>Инвестиции</Typography>
 				<InvestmentTable />
 			</section>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Production District</Typography>
+				<Typography variant='h4'>Инвестиционные проекты по районам</Typography>
 				<ProductionDistrictTable />
 			</section>
 		</div>

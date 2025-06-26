@@ -8,19 +8,19 @@ function Agriculture() {
 	return (
 		<div className='space-y-10'>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Yield</Typography>
+				<Typography variant='h4'>Поля</Typography>
 				<YieldTable />
 			</section>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Placement</Typography>
+				<Typography variant='h4'>Размещение</Typography>
 				<PlacementTable />
 			</section>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>District</Typography>
+				<Typography variant='h4'>Рынок</Typography>
 				<DistrictTable />
 			</section>
 			<section className='!space-y-5'>
-				<Typography variant='h4'>Firms</Typography>
+				<Typography variant='h4'>Фирмы</Typography>
 				<FirmsTable />
 			</section>
 		</div>
