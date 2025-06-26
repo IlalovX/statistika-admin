@@ -116,7 +116,7 @@ export default function ProjectsEditModal({
 						</Grid>
 						<Grid size={6}>
 							<TextField
-								label='Инициатор'
+								label='Инициатор проекта'
 								fullWidth
 								error={!!errors.project_initiator}
 								helperText={errors.project_initiator?.message}
@@ -125,7 +125,7 @@ export default function ProjectsEditModal({
 						</Grid>
 						<Grid size={6}>
 							<TextField
-								label='Бюджет'
+								label='Стоимость проекта (млн долл)'
 								fullWidth
 								error={!!errors.project_budget}
 								helperText={errors.project_budget?.message}
@@ -134,7 +134,7 @@ export default function ProjectsEditModal({
 						</Grid>
 						<Grid size={6}>
 							<TextField
-								label='Рабочие места'
+								label='Созданное рабочее место'
 								fullWidth
 								error={!!errors.jobs_created}
 								helperText={errors.jobs_created?.message}
@@ -143,7 +143,7 @@ export default function ProjectsEditModal({
 						</Grid>
 						<Grid size={6}>
 							<TextField
-								label='Дата запуска'
+								label='Срок запуска'
 								type='date'
 								fullWidth
 								error={!!errors.planned_date}
@@ -181,7 +181,7 @@ export default function ProjectsEditModal({
 						<Grid size={6}>
 							<TextField
 								select
-								label='Статус проекта'
+								label='Статус'
 								fullWidth
 								error={!!errors.project_status_id}
 								helperText={errors.project_status_id?.message}

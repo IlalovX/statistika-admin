@@ -178,7 +178,7 @@ function ProjectsAddModal({
 
 							<Grid size={6}>
 								<TextField
-									label='Бюджет проекта'
+									label='Стоимость проекта (млн долл)'
 									fullWidth
 									{...register('project_budget')}
 									value={watchedValues.project_budget || ''}
@@ -190,7 +190,7 @@ function ProjectsAddModal({
 
 							<Grid size={6}>
 								<TextField
-									label='Создано рабочих мест'
+									label='Созданное рабочее место'
 									fullWidth
 									{...register('jobs_created')}
 									value={watchedValues.jobs_created || ''}
@@ -202,7 +202,7 @@ function ProjectsAddModal({
 
 							<Grid size={6}>
 								<TextField
-									label='Планируемая дата'
+									label='Срок запуска'
 									type='date'
 									InputLabelProps={{ shrink: true }}
 									fullWidth
@@ -216,7 +216,7 @@ function ProjectsAddModal({
 
 							<Grid size={6}>
 								<TextField
-									label='Ответственная сторона'
+									label='Ответственный'
 									fullWidth
 									{...register('responsible_party')}
 									value={watchedValues.responsible_party || ''}
@@ -229,7 +229,7 @@ function ProjectsAddModal({
 							<Grid size={6}>
 								<TextField
 									select
-									label='Статус проекта'
+									label='Статус'
 									fullWidth
 									{...register('project_status_id')}
 									value={watchedValues.project_status_id || ''}
@@ -254,7 +254,7 @@ function ProjectsAddModal({
 
 							<Grid size={12}>
 								<TextField
-									label='Общий статус'
+									label='Общее состояние'
 									fullWidth
 									multiline
 									rows={6}

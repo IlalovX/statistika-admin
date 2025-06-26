@@ -31,6 +31,7 @@ type Column = {
 		| 'planned_date'
 		| 'responsible_party'
 		| 'project_status_id'
+		| 'project_last_update'
 		| 'project_overall_status'
 		| 'actions'
 	label: string
@@ -38,15 +39,16 @@ type Column = {
 }
 
 const columns: Column[] = [
-	{ id: 'project_name', label: 'Название проекта' },
-	{ id: 'project_initiator', label: 'Инициатор' },
-	{ id: 'project_budget', label: 'Бюджет' },
 	{ id: 'region_id', label: 'Регион' },
-	{ id: 'jobs_created', label: 'Рабочие места' },
-	{ id: 'planned_date', label: 'Дата запуска' },
+	{ id: 'project_initiator', label: 'Инициатор проекта' },
+	{ id: 'project_name', label: 'Название проекта' },
+	{ id: 'project_budget', label: 'Стоимость проекта (млн долл)' },
+	{ id: 'jobs_created', label: 'Созданное рабочее место' },
+	{ id: 'planned_date', label: 'Срок запуска' },
 	{ id: 'responsible_party', label: 'Ответственный' },
 	{ id: 'project_status_id', label: 'Статус' },
-	{ id: 'project_overall_status', label: 'Общий' },
+	{ id: 'project_last_update', label: 'Последнее обновление' },
+	{ id: 'project_overall_status', label: 'Общее состояние' },
 	{ id: 'actions', label: 'Действия', align: 'right' },
 ]
 
@@ -131,6 +133,7 @@ export function ProjectTable({
 								</TableCell>
 								<TableCell>{project.responsible_party}</TableCell>
 								<TableCell>{project.project_status}</TableCell>
+								<TableCell>{project.last_update}</TableCell>
 								<TableCell>
 									<IconButton onClick={() => handleOpen(project, 'more')}>
 										<InfoIcon color='primary' />
