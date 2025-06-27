@@ -1,10 +1,5 @@
 import { Autocomplete, TextField } from '@mui/material'
-import type {
-	Control,
-	ControllerRenderProps,
-	FieldPath,
-	FieldValues,
-} from 'react-hook-form'
+import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 import { useGetRegionsList } from '../../hooks/useRegions'
 
@@ -13,7 +8,6 @@ interface RegionSelectProps<T extends FieldValues> {
 	name: FieldPath<T>
 	error?: string
 }
-
 export const RegionSelect = <T extends FieldValues>({
 	control,
 	name,
@@ -25,11 +19,7 @@ export const RegionSelect = <T extends FieldValues>({
 		<Controller
 			name={name}
 			control={control}
-			render={({
-				field,
-			}: {
-				field: ControllerRenderProps<T, FieldPath<T>>
-			}) => {
+			render={({ field }) => {
 				const selectedRegion = regions.find(r => r.id === field.value) || null
 
 				return (
@@ -51,7 +41,7 @@ export const RegionSelect = <T extends FieldValues>({
 						)}
 						ListboxProps={{
 							sx: {
-								maxHeight: 200, // Примерно 4 элемента
+								maxHeight: 200,
 							},
 						}}
 					/>

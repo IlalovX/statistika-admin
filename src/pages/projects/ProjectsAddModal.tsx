@@ -12,20 +12,21 @@ import {
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { RegionSelect } from '../../components/common/RegionSelect'
 import { useCreateProject } from '../../hooks/useProjects'
 import type { ProjectsStatusesForm } from '../../types/projects-statuses'
 import type { Region } from '../../types/regios'
 import { useAppSelector } from '../../utils/helpers'
 
 const schema = z.object({
-	region_id: z.string().min(1, 'Выберите регион'),
+	region_id: z.number().min(1, 'Выберите регион'),
 	project_initiator: z.string().min(1, 'Укажите инициатора'),
 	project_name: z.string().min(1, 'Укажите название проекта'),
 	project_budget: z.string().min(1, 'Укажите бюджет'),
 	jobs_created: z.string().min(1, 'Укажите кол-во рабочих мест'),
 	planned_date: z.string().min(1, 'Укажите дату'),
 	responsible_party: z.string().min(1, 'Укажите ответственного'),
-	project_status_id: z.string().min(1, 'Укажите статус'),
+	project_status_id: z.coerce.number().min(1, 'Укажите статус'),
 	overall_status: z.string().min(1, 'Укажите общий статус'),
 })
 
@@ -47,34 +48,36 @@ function ProjectsAddModal({
 		formState: { errors },
 		reset,
 		setValue,
+		control,
 		watch,
 	} = useForm<FormValues>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			region_id: '',
+			region_id: 0,
 			project_initiator: '',
 			project_name: '',
 			project_budget: '',
 			jobs_created: '',
 			planned_date: '',
 			responsible_party: '',
-			project_status_id: '',
+			project_status_id: 0,
 			overall_status: '',
 		},
 	})
+
+	console.log('errors', errors)
 
 	const watchedValues = watch()
 	const create = useCreateProject()
 
 	useEffect(() => {
 		if (!user?.is_superadmin && user?.region_id && regions.length > 0) {
-			setValue('region_id', String(user.region_id))
+			setValue('region_id', user.region_id)
 		}
 	}, [user, regions, setValue])
 
-	const onSubmit = (data: FormValues) => {
+	const onSubmit = async (data: FormValues) => {
 		console.log(data)
-
 		const [year, month, day] = data.planned_date.split('-')
 		const formattedDate = `${day}.${month}.${year}`
 		const transformedData = {
@@ -83,7 +86,12 @@ function ProjectsAddModal({
 			status_reason: '',
 		}
 
-		create.mutateAsync(transformedData).then(() => handleClose())
+		try {
+			await create.mutateAsync(transformedData)
+			handleClose()
+		} catch (error) {
+			console.error('Ошибка при создании проекта', error)
+		}
 	}
 
 	const handleClose = () => {
@@ -95,7 +103,7 @@ function ProjectsAddModal({
 		setOpen(true)
 		reset()
 		if (!user?.is_superadmin && user?.region_id) {
-			setValue('region_id', String(user.region_id))
+			setValue('region_id', user.region_id)
 		}
 	}
 
@@ -112,29 +120,7 @@ function ProjectsAddModal({
 						<Grid container spacing={2} mt={1}>
 							<Grid size={6}>
 								{user?.is_superadmin ? (
-									<TextField
-										select
-										label='Регион'
-										fullWidth
-										{...register('region_id')}
-										value={watchedValues.region_id || ''}
-										error={!!errors?.region_id}
-										helperText={errors?.region_id?.message}
-										onChange={e => setValue('region_id', e.target.value)}
-									>
-										<MenuItem value='' disabled>
-											Выберите регион
-										</MenuItem>
-										{regions && regions.length > 0 ? (
-											regions.map(region => (
-												<MenuItem key={region.id} value={String(region.id)}>
-													{region.region_name}
-												</MenuItem>
-											))
-										) : (
-											<MenuItem disabled>Загрузка регионов...</MenuItem>
-										)}
-									</TextField>
+									<RegionSelect control={control} name='region_id' />
 								) : (
 									<TextField
 										label='Регион'
@@ -235,14 +221,14 @@ function ProjectsAddModal({
 									value={watchedValues.project_status_id || ''}
 									error={!!errors.project_status_id}
 									helperText={errors.project_status_id?.message}
-									onChange={e => setValue('project_status_id', e.target.value)}
+									onChange={e => setValue('project_status_id', +e.target.value)}
 								>
 									<MenuItem value='' disabled>
 										Выберите статус
 									</MenuItem>
 									{statuses && statuses.length > 0 ? (
 										statuses.map(status => (
-											<MenuItem key={status.id} value={String(status.id)}>
+											<MenuItem key={status.id} value={status.id}>
 												{status.value}
 											</MenuItem>
 										))

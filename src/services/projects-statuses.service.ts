@@ -10,8 +10,12 @@ export const ProjectsStatusesService = {
 		const res = await axiosWithAuth.post('/projects/status/add', data)
 		return res.data.data
 	},
+	async editStatus(data: ProjectsStatusesForm, id: string | number) {
+		const res = await axiosWithAuth.put(`/projects/status/${id}`, data)
+		return res.data.data
+	},
 	async deleteStatus(id: string | number) {
-		const res = await axiosWithAuth.delete(`/projects/status/${id}`)
+		const res = await axiosWithAuth.delete(`/projects/status/delete/${id}`)
 		return res.data.data
 	},
 }

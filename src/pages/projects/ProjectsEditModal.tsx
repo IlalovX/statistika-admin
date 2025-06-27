@@ -10,8 +10,9 @@ import {
 	TextField,
 } from '@mui/material'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { RegionSelect } from '../../components/common/RegionSelect'
 import { useEditProject } from '../../hooks/useProjects'
 import type { CreateProjectForm, EditProjectForm } from '../../types/projects'
 import type { ProjectsStatusesForm } from '../../types/projects-statuses'
@@ -49,7 +50,6 @@ export default function ProjectsEditModal({
 	open,
 	onClose,
 	project,
-	regions,
 	statuses,
 }: Props) {
 	const { mutateAsync, isPending } = useEditProject()
@@ -58,9 +58,21 @@ export default function ProjectsEditModal({
 		register,
 		handleSubmit,
 		reset,
+		control,
 		formState: { errors },
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
+		defaultValues: {
+			project_name: project?.project_name || '',
+			project_initiator: project?.project_initiator || '',
+			project_budget: project?.project_budget || '',
+			jobs_created: +(project?.jobs_created as string) || 0,
+			planned_date: project?.planned_date.split(' ')[0] || '',
+			responsible_party: project?.responsible_party || '',
+			overall_status: project?.overall_status || '',
+			region_id: (project?.region_id as number) || 0,
+			project_status_id: (project?.project_status_id as number) || 0,
+		},
 	})
 
 	useEffect(() => {
@@ -73,8 +85,8 @@ export default function ProjectsEditModal({
 				planned_date: project.planned_date.split(' ')[0],
 				responsible_party: project.responsible_party,
 				overall_status: project.overall_status,
-				region_id: +project.region_id,
-				project_status_id: +project.project_status_id,
+				region_id: project.region_id,
+				project_status_id: project.project_status_id,
 			})
 		}
 	}, [project, reset])
@@ -84,8 +96,8 @@ export default function ProjectsEditModal({
 
 		const formData: EditProjectForm = {
 			...data,
-			status_reason: '', // если поле не заполняется вручную
-			responsible_party: data.responsible_party || '', // если optional
+			status_reason: '',
+			responsible_party: data.responsible_party || '',
 			overall_status: data.overall_status || '',
 		}
 
@@ -112,6 +124,7 @@ export default function ProjectsEditModal({
 								error={!!errors.project_name}
 								helperText={errors.project_name?.message}
 								{...register('project_name')}
+								InputProps={{ readOnly: true }}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -121,6 +134,7 @@ export default function ProjectsEditModal({
 								error={!!errors.project_initiator}
 								helperText={errors.project_initiator?.message}
 								{...register('project_initiator')}
+								InputProps={{ readOnly: true }}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -130,6 +144,7 @@ export default function ProjectsEditModal({
 								error={!!errors.project_budget}
 								helperText={errors.project_budget?.message}
 								{...register('project_budget')}
+								InputProps={{ readOnly: true }}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -139,6 +154,7 @@ export default function ProjectsEditModal({
 								error={!!errors.jobs_created}
 								helperText={errors.jobs_created?.message}
 								{...register('jobs_created')}
+								InputProps={{ readOnly: true }}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -149,50 +165,48 @@ export default function ProjectsEditModal({
 								error={!!errors.planned_date}
 								helperText={errors.planned_date?.message}
 								{...register('planned_date')}
+								InputProps={{ readOnly: true }}
 							/>
 						</Grid>
 						<Grid size={6}>
 							<TextField
 								label='Ответственный'
 								fullWidth
-								disabled
-								{...register('responsible_party')}
+								value={project?.responsible_party || ''}
+								InputProps={{ readOnly: true }}
 							/>
 						</Grid>
 
 						{/* Новый блок: Регион и статус */}
 						<Grid size={6}>
-							<TextField
-								select
-								label='Регион'
-								fullWidth
-								error={!!errors.region_id}
-								helperText={errors.region_id?.message}
-								{...register('region_id')}
-							>
-								{regions.map(r => (
-									<MenuItem key={r.id} value={r.id}>
-										{r.region_name}
-									</MenuItem>
-								))}
-							</TextField>
+							<RegionSelect<FormData>
+								control={control}
+								name='region_id'
+								error={errors.region_id?.message}
+							/>
 						</Grid>
 
 						<Grid size={6}>
-							<TextField
-								select
-								label='Статус'
-								fullWidth
-								error={!!errors.project_status_id}
-								helperText={errors.project_status_id?.message}
-								{...register('project_status_id')}
-							>
-								{statuses.map(s => (
-									<MenuItem key={s.id} value={s.id}>
-										{s.value}
-									</MenuItem>
-								))}
-							</TextField>
+							<Controller
+								name='project_status_id'
+								control={control}
+								render={({ field }) => (
+									<TextField
+										select
+										label='Статус'
+										fullWidth
+										{...field}
+										error={!!errors.project_status_id}
+										helperText={errors.project_status_id?.message}
+									>
+										{statuses.map(s => (
+											<MenuItem key={s.id} value={s.id}>
+												{s.value}
+											</MenuItem>
+										))}
+									</TextField>
+								)}
+							/>
 						</Grid>
 
 						<Grid size={12}>

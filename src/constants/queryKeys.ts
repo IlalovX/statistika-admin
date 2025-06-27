@@ -69,6 +69,7 @@ export const QUERY_KEYS = {
 		LIST: 'projects_status_list',
 		CREATE: 'create_project_status',
 		DELETE: 'delete_project_status',
+		EDIT: 'edit_project_status',
 	},
 
 	TOURISM: {

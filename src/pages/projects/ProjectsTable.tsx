@@ -40,8 +40,8 @@ type Column = {
 
 const columns: Column[] = [
 	{ id: 'region_id', label: 'Регион' },
-	{ id: 'project_initiator', label: 'Инициатор проекта' },
 	{ id: 'project_name', label: 'Название проекта' },
+	{ id: 'project_initiator', label: 'Инициатор проекта' },
 	{ id: 'project_budget', label: 'Стоимость проекта (млн долл)' },
 	{ id: 'jobs_created', label: 'Созданное рабочее место' },
 	{ id: 'planned_date', label: 'Срок запуска' },
@@ -77,11 +77,11 @@ export function ProjectTable({
 			project_name: project.project_name,
 			project_initiator: project.initiator,
 			project_budget: String(project.budget),
-			region_id: '',
+			region_id: 0,
 			jobs_created: project.jobs_created,
 			planned_date: project.planned_date,
 			responsible_party: project.responsible_party,
-			project_status_id: '',
+			project_status_id: 0,
 			status_reason: '',
 			overall_status: project.overall_status,
 		}
@@ -132,7 +132,9 @@ export function ProjectTable({
 									{new Date(project.planned_date).toLocaleDateString('ru-RU')}
 								</TableCell>
 								<TableCell>{project.responsible_party}</TableCell>
-								<TableCell>{project.project_status}</TableCell>
+								<TableCell sx={{ color: project.project_status.color }}>
+									{project.project_status.value}
+								</TableCell>
 								<TableCell>{project.last_update}</TableCell>
 								<TableCell>
 									<IconButton onClick={() => handleOpen(project, 'more')}>

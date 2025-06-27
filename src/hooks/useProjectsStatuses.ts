@@ -1,6 +1,6 @@
-import { QUERY_KEYS } from '../constants/queryKeys'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { QUERY_KEYS } from '../constants/queryKeys'
 import { ProjectsStatusesService } from '../services/projects-statuses.service'
 import type { ProjectsStatusesForm } from '../types/projects-statuses'
 
@@ -29,13 +29,32 @@ export function useCreateProjectStatus() {
 }
 
 // DELETE
-export function useDeleteProjectStatus(id: string | number) {
+export function useDeleteProjectStatus() {
 	const queryClient = useQueryClient()
 	return useMutation({
 		mutationKey: [QUERY_KEYS.PROJECT_STATUSES.DELETE],
-		mutationFn: () => ProjectsStatusesService.deleteStatus(id),
+		mutationFn: ({ id }: { id: string | number }) => {
+			return ProjectsStatusesService.deleteStatus(id)
+		},
 		onSuccess: () => {
 			toast.success('Успешно удалено ✅')
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.PROJECT_STATUSES.LIST],
+			})
+		},
+	})
+}
+
+export function useEditProjectStatus() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: [QUERY_KEYS.PROJECT_STATUSES.EDIT],
+		mutationFn: (data: ProjectsStatusesForm & { id: string | number }) => {
+			const { id, ...formData } = data
+			return ProjectsStatusesService.editStatus(formData, id)
+		},
+		onSuccess: () => {
+			toast.success('Успешно измененно ✅')
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.PROJECT_STATUSES.LIST],
 			})

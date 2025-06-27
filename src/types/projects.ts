@@ -1,12 +1,12 @@
 export interface CreateProjectForm {
-	region_id: number | string
+	region_id: number
 	project_initiator: string
 	project_name: string
 	project_budget: string
 	jobs_created: string
 	planned_date: string
 	responsible_party?: string
-	project_status_id: number | string
+	project_status_id: number
 	status_reason?: string
 	overall_status?: string
 }
@@ -32,7 +32,10 @@ export interface GetProject {
 	planned_date: string // "2004-01-01 00:00:00"
 	last_update: string // "14.06.2025"
 	responsible_party: string
-	project_status: string // e.g., "Бажарилмоқда"
+	project_status: {
+		value: string
+		color: string
+	} // e.g., "Бажарилмоқда"
 	region: string // e.g., "Amiwdárya"
 	overall_status: string
 }
