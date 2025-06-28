@@ -10,9 +10,8 @@ import type { JSX } from 'react'
 import { NavLink, useNavigate } from 'react-router'
 import { useCategories } from '../../../context/CategoriesContext'
 import { logout } from '../../../features/slices/UserMeSlice'
-import { useGetUserMe } from '../../../hooks/useUserMe'
 import { removeTokens } from '../../../services/auth-token.service'
-import { useAppDispatch } from '../../../utils/helpers'
+import { useAppDispatch, useAppSelector } from '../../../utils/helpers'
 
 const iconMap: Record<string, JSX.Element> = {
 	projects: <DashboardCustomizeIcon fontSize='medium' />,
@@ -23,7 +22,7 @@ const iconMap: Record<string, JSX.Element> = {
 
 const Sidebar = () => {
 	const navigate = useNavigate()
-	const { data: user } = useGetUserMe()
+	const user = useAppSelector(state => state.user_me.user)
 	const categories = useCategories()
 	const dispatch = useAppDispatch()
 	if (!user || !categories) return null

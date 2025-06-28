@@ -21,6 +21,7 @@ import ProjectsEditModal from './ProjectsEditModal'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import InfoIcon from '@mui/icons-material/Info'
+
 type Column = {
 	id:
 		| 'project_name'
@@ -30,7 +31,7 @@ type Column = {
 		| 'jobs_created'
 		| 'planned_date'
 		| 'responsible_party'
-		| 'project_status_id'
+		| 'project_status'
 		| 'project_last_update'
 		| 'project_overall_status'
 		| 'actions'
@@ -46,7 +47,7 @@ const columns: Column[] = [
 	{ id: 'jobs_created', label: 'Созданное рабочее место' },
 	{ id: 'planned_date', label: 'Срок запуска' },
 	{ id: 'responsible_party', label: 'Ответственный' },
-	{ id: 'project_status_id', label: 'Статус' },
+	{ id: 'project_status', label: 'Статус' },
 	{ id: 'project_last_update', label: 'Последнее обновление' },
 	{ id: 'project_overall_status', label: 'Общее состояние' },
 	{ id: 'actions', label: 'Действия', align: 'right' },
@@ -63,29 +64,39 @@ export function ProjectTable({
 	const { mutate: deleteProject } = useDeleteProject()
 
 	const [open, setOpen] = useState(false)
+
 	const [selected, setSelected] = useState<
-		(CreateProjectForm & { id?: number }) | GetProject | null
+		| (CreateProjectForm & { id: number; project_status_id: number })
+		| GetProject
+		| null
 	>(null)
 
 	const [modalType, setModalType] = useState<'edit' | 'more'>('edit')
 
+	function getStatusIdFromValue(value: string): number {
+		const found = statuses.find(s => s.value === value)
+		if (!found) throw new Error(`Не найден статус с value = ${value}`)
+		return found?.id
+	}
+
 	function convertToCreateProjectForm(
 		project: GetProject
-	): CreateProjectForm & { id: number } {
+	): CreateProjectForm & { id: number; project_status_id: number } {
 		return {
 			id: project.id,
 			project_name: project.project_name,
 			project_initiator: project.initiator,
 			project_budget: String(project.budget),
-			region_id: 0,
 			jobs_created: project.jobs_created,
 			planned_date: project.planned_date,
 			responsible_party: project.responsible_party,
-			project_status_id: 0,
+			project_status_id: getStatusIdFromValue(project.project_status.value), // ⚠️
+			region_id: project.region.id,
 			status_reason: '',
 			overall_status: project.overall_status,
 		}
 	}
+	
 
 	const handleOpen = (project: GetProject, type: 'edit' | 'more') => {
 		if (type === 'edit') {
@@ -126,7 +137,7 @@ export function ProjectTable({
 								<TableCell>{project.project_name}</TableCell>
 								<TableCell>{project.initiator}</TableCell>
 								<TableCell>{project.budget}</TableCell>
-								<TableCell>{project.region}</TableCell>
+								<TableCell>{project.region.name}</TableCell>
 								<TableCell>{project.jobs_created}</TableCell>
 								<TableCell>
 									{new Date(project.planned_date).toLocaleDateString('ru-RU')}

@@ -70,8 +70,8 @@ export default function ProjectsEditModal({
 			planned_date: project?.planned_date.split(' ')[0] || '',
 			responsible_party: project?.responsible_party || '',
 			overall_status: project?.overall_status || '',
-			region_id: (project?.region_id as number) || 0,
-			project_status_id: (project?.project_status_id as number) || 0,
+			region_id: project?.region_id ?? undefined,
+			project_status_id: project?.project_status_id ?? undefined,
 		},
 	})
 

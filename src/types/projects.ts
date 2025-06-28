@@ -29,13 +29,16 @@ export interface GetProject {
 	initiator: string
 	budget: number
 	jobs_created: string
-	planned_date: string // "2004-01-01 00:00:00"
-	last_update: string // "14.06.2025"
+	planned_date: string
+	last_update: string
 	responsible_party: string
 	project_status: {
 		value: string
 		color: string
-	} // e.g., "Бажарилмоқда"
-	region: string // e.g., "Amiwdárya"
+	}
+	region: {
+		id: number
+		name: string
+	}
 	overall_status: string
 }

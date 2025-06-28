@@ -54,7 +54,6 @@ function UsersEditModal({ user }: UsersEditModalProps) {
 	})
 
 	const editUser = useEditUser()
-	console.log(user)
 
 	useEffect(() => {
 		if (open && user) {

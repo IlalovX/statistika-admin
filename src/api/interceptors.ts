@@ -38,7 +38,6 @@ axiosWithAuth.interceptors.response.use(
 		) {
 			originalRequest._isRetry = true
 			try {
-				toast.error('Токен истек')
 				const res = await axiosClassic.post('/admin/refresh', {
 					refresh_token: refreshToken,
 				})
@@ -46,7 +45,6 @@ axiosWithAuth.interceptors.response.use(
 				const newAccessToken = res.data.access_token
 				if (newAccessToken) {
 					saveTokens(newAccessToken, refreshToken)
-					toast.success('Access токен обновлён 🔄')
 
 					originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
 
