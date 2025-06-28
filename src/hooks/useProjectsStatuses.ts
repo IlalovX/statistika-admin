@@ -49,10 +49,10 @@ export function useEditProjectStatus() {
 	const queryClient = useQueryClient()
 	return useMutation({
 		mutationKey: [QUERY_KEYS.PROJECT_STATUSES.EDIT],
-		mutationFn: (data: ProjectsStatusesForm & { id: string | number }) => {
+		mutationFn: (data: ProjectsStatusesForm) => {
 			const { id, ...formData } = data
-			return ProjectsStatusesService.editStatus(formData, id)
-		},
+			return ProjectsStatusesService.editStatus(formData, id as number)
+		}, 
 		onSuccess: () => {
 			toast.success('Успешно измененно ✅')
 			queryClient.invalidateQueries({

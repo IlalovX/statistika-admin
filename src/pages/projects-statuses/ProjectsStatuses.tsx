@@ -31,7 +31,7 @@ const ProjectsStatusesPage = () => {
 	const { mutateAsync: deleteStatus } = useDeleteProjectStatus()
 
 	const [open, setOpen] = useState(false)
-	const [editId, setEditId] = useState<string | null>(null)
+	const [editId, setEditId] = useState<number | null>(null)
 	const [form, setForm] = useState<ProjectsStatusesForm>({
 		value: '',
 		color: '',
@@ -39,7 +39,7 @@ const ProjectsStatusesPage = () => {
 
 	const handleOpen = (status?: ProjectsStatusesForm) => {
 		if (status) {
-			setEditId(status.id as string)
+			setEditId(status.id ?? 0)
 			setForm({ value: status.value, color: status.color })
 		} else {
 			setEditId(null)

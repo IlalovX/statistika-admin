@@ -54,7 +54,6 @@ export default function YieldAddModal({
 	})
 
 	const onSubmit = async (formData: CreateYieldForm) => {
-		console.log(formData)
 
 		await mutateAsync(formData)
 		reset()

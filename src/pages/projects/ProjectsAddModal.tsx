@@ -65,7 +65,6 @@ function ProjectsAddModal({
 		},
 	})
 
-	console.log('errors', errors)
 
 	const watchedValues = watch()
 	const create = useCreateProject()
@@ -77,7 +76,6 @@ function ProjectsAddModal({
 	}, [user, regions, setValue])
 
 	const onSubmit = async (data: FormValues) => {
-		console.log(data)
 		const [year, month, day] = data.planned_date.split('-')
 		const formattedDate = `${day}.${month}.${year}`
 		const transformedData = {

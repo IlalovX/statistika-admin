@@ -75,8 +75,7 @@ export function ProjectTable({
 
 	function getStatusIdFromValue(value: string): number {
 		const found = statuses.find(s => s.value === value)
-		if (!found) throw new Error(`Не найден статус с value = ${value}`)
-		return found?.id
+		return found?.id ?? 0
 	}
 
 	function convertToCreateProjectForm(
@@ -96,7 +95,6 @@ export function ProjectTable({
 			overall_status: project.overall_status,
 		}
 	}
-	
 
 	const handleOpen = (project: GetProject, type: 'edit' | 'more') => {
 		if (type === 'edit') {
