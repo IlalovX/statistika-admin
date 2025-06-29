@@ -7,6 +7,7 @@ export function useGetUserMe() {
 		queryFn: async () => {
 			return await userMeService.getMe()
 		},
+
 		staleTime: 1000 * 60 * 5, // 5 минут
 	})
 }

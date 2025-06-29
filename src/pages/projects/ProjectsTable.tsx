@@ -144,13 +144,15 @@ export function ProjectTable({
 								<TableCell sx={{ color: project.project_status.color }}>
 									{project.project_status.value}
 								</TableCell>
-								<TableCell>{project.last_update}</TableCell>
+								<TableCell>
+									{new Date(project.last_update).toLocaleDateString('ru-RU')}
+								</TableCell>
 								<TableCell>
 									<IconButton onClick={() => handleOpen(project, 'more')}>
 										<InfoIcon color='primary' />
 									</IconButton>
 								</TableCell>
-								<TableCell align='right' width={120}>
+								<TableCell align='right'>
 									<IconButton onClick={() => handleOpen(project, 'edit')}>
 										<EditIcon />
 									</IconButton>

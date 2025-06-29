@@ -65,7 +65,6 @@ function ProjectsAddModal({
 		},
 	})
 
-
 	const watchedValues = watch()
 	const create = useCreateProject()
 

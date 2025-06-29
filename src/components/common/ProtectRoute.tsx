@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
 import { Navigate } from 'react-router'
-import { logout } from '../../features/slices/UserMeSlice'
+import { logout, updateUserMe } from '../../features/slices/UserMeSlice'
 import { useGetUserMe } from '../../hooks/useUserMe'
 import {
 	getAccessToken,
@@ -14,6 +14,10 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 	const accessToken = getAccessToken()
 	const refreshToken = getRefreshToken()
 	const dispatch = useAppDispatch()
+
+	if (user) {
+		dispatch(updateUserMe(user))
+	}
 
 	if (!accessToken || !refreshToken) {
 		removeTokens()

@@ -17,6 +17,7 @@ import { useEditProject } from '../../hooks/useProjects'
 import type { CreateProjectForm, EditProjectForm } from '../../types/projects'
 import type { ProjectsStatusesForm } from '../../types/projects-statuses'
 import type { Region } from '../../types/regios'
+import { useAppSelector } from '../../utils/helpers'
 
 const schema = z.object({
 	project_name: z.string().min(1, 'Введите название'),
@@ -53,6 +54,8 @@ export default function ProjectsEditModal({
 	statuses,
 }: Props) {
 	const { mutateAsync, isPending } = useEditProject()
+	const user = useAppSelector(state => state.user_me.user)
+	const isReadOnly = user && !user.is_superadmin
 
 	const {
 		register,
@@ -93,9 +96,11 @@ export default function ProjectsEditModal({
 
 	const onSubmit = async (data: FormData) => {
 		if (!project) return
-
+		const [year, month, day] = data.planned_date.split('-')
+		const formattedDate = `${day}.${month}.${year}`
 		const formData: EditProjectForm = {
 			...data,
+			planned_date: formattedDate,
 			status_reason: '',
 			responsible_party: data.responsible_party || '',
 			overall_status: data.overall_status || '',
@@ -124,7 +129,7 @@ export default function ProjectsEditModal({
 								error={!!errors.project_name}
 								helperText={errors.project_name?.message}
 								{...register('project_name')}
-								InputProps={{ readOnly: true }}
+								disabled={isReadOnly as boolean}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -134,7 +139,7 @@ export default function ProjectsEditModal({
 								error={!!errors.project_initiator}
 								helperText={errors.project_initiator?.message}
 								{...register('project_initiator')}
-								InputProps={{ readOnly: true }}
+								disabled={isReadOnly as boolean}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -144,7 +149,7 @@ export default function ProjectsEditModal({
 								error={!!errors.project_budget}
 								helperText={errors.project_budget?.message}
 								{...register('project_budget')}
-								InputProps={{ readOnly: true }}
+								disabled={isReadOnly as boolean}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -154,7 +159,7 @@ export default function ProjectsEditModal({
 								error={!!errors.jobs_created}
 								helperText={errors.jobs_created?.message}
 								{...register('jobs_created')}
-								InputProps={{ readOnly: true }}
+								disabled={isReadOnly as boolean}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -165,7 +170,7 @@ export default function ProjectsEditModal({
 								error={!!errors.planned_date}
 								helperText={errors.planned_date?.message}
 								{...register('planned_date')}
-								InputProps={{ readOnly: true }}
+								disabled={isReadOnly as boolean}
 							/>
 						</Grid>
 						<Grid size={6}>
@@ -173,16 +178,16 @@ export default function ProjectsEditModal({
 								label='Ответственный'
 								fullWidth
 								value={project?.responsible_party || ''}
-								InputProps={{ readOnly: true }}
+								disabled={isReadOnly as boolean}
 							/>
 						</Grid>
 
-						{/* Новый блок: Регион и статус */}
 						<Grid size={6}>
 							<RegionSelect<FormData>
 								control={control}
 								name='region_id'
 								error={errors.region_id?.message}
+								
 							/>
 						</Grid>
 

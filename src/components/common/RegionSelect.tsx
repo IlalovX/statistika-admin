@@ -7,11 +7,13 @@ interface RegionSelectProps<T extends FieldValues> {
 	control: Control<T>
 	name: FieldPath<T>
 	error?: string
+	disabled?: boolean
 }
 export const RegionSelect = <T extends FieldValues>({
 	control,
 	name,
 	error,
+	disabled,
 }: RegionSelectProps<T>) => {
 	const { data: regions = [] } = useGetRegionsList()
 
@@ -37,6 +39,7 @@ export const RegionSelect = <T extends FieldValues>({
 								label='Регион'
 								error={!!error}
 								helperText={error}
+								disabled={disabled}
 							/>
 						)}
 						ListboxProps={{
