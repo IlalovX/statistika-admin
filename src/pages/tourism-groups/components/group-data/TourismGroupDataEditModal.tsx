@@ -10,6 +10,7 @@ import {
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
 import { useEditTourismGroupData } from '../../../../hooks/useTourismGroups'
 import type { GetTourismGroupData } from '../../../../types/tourism-groups'
 
@@ -35,13 +36,14 @@ export function TourismGroupDataEditModal({ data, open, onClose }: Props) {
 		register,
 		handleSubmit,
 		reset,
+		control,
 		formState: { errors },
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			year: data.year,
 			month: data.month,
-			country_code: data.country_code.official,
+			country_code: data.country_code.data.official,
 			tourist_count: data.tourist_count,
 		},
 	})
@@ -51,7 +53,7 @@ export function TourismGroupDataEditModal({ data, open, onClose }: Props) {
 			reset({
 				year: data.year,
 				month: data.month,
-				country_code: data.country_code.official,
+				country_code: data.country_code.data.official,
 				tourist_count: data.tourist_count,
 			})
 		}
@@ -93,12 +95,10 @@ export function TourismGroupDataEditModal({ data, open, onClose }: Props) {
 					helperText={errors.month?.message}
 					{...register('month', { valueAsNumber: true })}
 				/>
-				<TextField
-					label='Код страны (ISO alpha-3)'
-					fullWidth
-					error={!!errors.country_code}
-					helperText={errors.country_code?.message}
-					{...register('country_code')}
+				<CountrySelect
+					control={control}
+					name='country_code'
+					error={errors.country_code?.message}
 				/>
 				<TextField
 					label='Количество туристов'

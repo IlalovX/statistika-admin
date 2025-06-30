@@ -51,7 +51,7 @@ export default function InvestmentTable() {
 							<TableCell>Год</TableCell>
 							<TableCell>Месяц</TableCell>
 							<TableCell>Регион ID</TableCell>
-							<TableCell>Код страны</TableCell>
+							<TableCell>Страна</TableCell>
 							<TableCell>Название проекта</TableCell>
 							<TableCell>Кол-во проектов</TableCell>
 							<TableCell>Рабочие места</TableCell>
@@ -60,14 +60,17 @@ export default function InvestmentTable() {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{investments?.map(item => (
+						{investments?.map((item) => (
 							<TableRow key={item.id}>
 								<TableCell>{item.year}</TableCell>
 								<TableCell>{getMonthLabel(item.month)}</TableCell>
 								<TableCell>
-									{regions.find(reg => reg.id === item.region_id)?.region_name}
+									{
+										regions.find((reg) => reg.id === item.region_id)
+											?.region_name
+									}
 								</TableCell>
-								<TableCell>{item.country.official}</TableCell>
+								<TableCell>{item.country.data.official}</TableCell>
 								<TableCell>{item.project_name}</TableCell>
 								<TableCell>{item.project_count}</TableCell>
 								<TableCell>{item.project_workplaces}</TableCell>
@@ -86,10 +89,8 @@ export default function InvestmentTable() {
 				</Table>
 			</TableContainer>
 
-			{/* Add Modal */}
 			<InvestmentAddModal open={isAddOpen} onClose={() => setAddOpen(false)} />
 
-			{/* Edit Modal */}
 			{editData && (
 				<InvestmentEditModal
 					open={!!editData}

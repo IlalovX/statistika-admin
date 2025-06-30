@@ -10,9 +10,9 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateInternal } from '../../../../hooks/useTourism'
 import type { CreateTourismInternalForm } from '../../../../types/tourism'
-import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const schema = z.object({
 	year: z.coerce.number().min(1900, 'Год должен быть валиден'),
@@ -35,7 +35,7 @@ function TourismInternalAddModal({
 		handleSubmit,
 		reset,
 		formState: { errors },
-		control
+		control,
 	} = useForm<FormValues>({
 		resolver: zodResolver(schema),
 	})

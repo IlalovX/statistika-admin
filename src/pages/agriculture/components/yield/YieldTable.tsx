@@ -45,11 +45,11 @@ export default function YieldTable() {
 					select
 					label='Год'
 					value={year}
-					onChange={e => setYear(Number(e.target.value))}
+					onChange={(e) => setYear(Number(e.target.value))}
 					size='small'
 					style={{ width: 150 }}
 				>
-					{YEARS.map(y => (
+					{YEARS.map((y) => (
 						<MenuItem key={y} value={y}>
 							{y}
 						</MenuItem>
@@ -82,11 +82,11 @@ export default function YieldTable() {
 								</TableCell>
 							</TableRow>
 						) : (
-							list?.map(row => (
+							list?.map((row) => (
 								<TableRow key={row.id}>
 									<TableCell>{row.year}</TableCell>
 									<TableCell>{getMonthLabel(row.month)}</TableCell>
-									<TableCell>{row.country.official}</TableCell>
+									<TableCell>{row.country.data.official}</TableCell>
 									<TableCell>{row.product}</TableCell>
 									<TableCell>{row.type}</TableCell>
 									<TableCell>{row.value}</TableCell>

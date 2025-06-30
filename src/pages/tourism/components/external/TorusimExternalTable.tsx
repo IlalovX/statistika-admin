@@ -45,7 +45,7 @@ export default function TorusimExternalTable() {
 						<TableRow>
 							<TableCell>Год</TableCell>
 							<TableCell>Месяц</TableCell>
-							<TableCell>Код страны</TableCell>
+							<TableCell>Страна</TableCell>
 							<TableCell>Въездной</TableCell>
 							<TableCell>Выездной</TableCell>
 							<TableCell>Доход</TableCell>
@@ -59,7 +59,7 @@ export default function TorusimExternalTable() {
 								<TableCell>{row.year}</TableCell>
 								<TableCell>{getMonthLabel(row.month)}</TableCell>
 								<TableCell>
-									{row.country_code && row.country_code.official}
+									{row.country_code && row.country_code.data.official}
 								</TableCell>
 								<TableCell>{row.inbound_tourists}</TableCell>
 								<TableCell>{row.outbound_tourists}</TableCell>

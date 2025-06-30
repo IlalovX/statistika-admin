@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
 import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateYield } from '../../../../hooks/useAgriculture'
 import type { CreateYieldForm } from '../../../../types/agriculture'
@@ -18,7 +19,7 @@ import type { CreateYieldForm } from '../../../../types/agriculture'
 const schema = z.object({
 	year: z.number().min(2000),
 	month: z.number().min(1).max(12),
-	country_code: z.string().min(1).max(2),
+	country_code: z.string().min(1),
 	product: z.string().min(1),
 	type: z.string().min(1),
 	value: z.string().min(1),
@@ -54,7 +55,6 @@ export default function YieldAddModal({
 	})
 
 	const onSubmit = async (formData: CreateYieldForm) => {
-
 		await mutateAsync(formData)
 		reset()
 		onClose()
@@ -84,12 +84,10 @@ export default function YieldAddModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								label='Страна'
-								fullWidth
-								error={!!errors.country_code}
-								helperText={errors.country_code?.message}
-								{...register('country_code')}
+							<CountrySelect
+								control={control}
+								name='country_code'
+								error={errors.country_code?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

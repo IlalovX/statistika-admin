@@ -11,13 +11,14 @@ import {
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useEditInvestment } from '../../../../hooks/useInvestment'
 import type {
 	CreateInvestmentsForm,
 	GetInvestmentsForm,
 } from '../../../../types/investment'
-import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const isNumeric = (val: string) =>
 	typeof val === 'string' &&
@@ -55,7 +56,7 @@ export default function InvestmentEditModal({
 	} = useForm<CreateInvestmentsForm>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			country_code: data.country.official,
+			country_code: data.country.data.official,
 			investment_amount: data.investment_amount || '',
 			month: data.month,
 			project_count: data.project_count,
@@ -69,7 +70,7 @@ export default function InvestmentEditModal({
 	useEffect(() => {
 		if (data) {
 			reset({
-				country_code: data.country.official,
+				country_code: data.country.data.official,
 				investment_amount: String(data.investment_amount),
 				month: data.month,
 				project_count: data.project_count,
@@ -129,18 +130,10 @@ export default function InvestmentEditModal({
 						</Grid>
 
 						<Grid size={6}>
-							<Controller
-								name='country_code'
+							<CountrySelect
 								control={control}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										label='Код страны'
-										fullWidth
-										error={!!errors.country_code}
-										helperText={errors.country_code?.message}
-									/>
-								)}
+								name='country_code'
+								error={errors.country_code?.message}
 							/>
 						</Grid>
 

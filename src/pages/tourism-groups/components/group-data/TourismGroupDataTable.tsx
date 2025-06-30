@@ -113,7 +113,7 @@ export default function TourismGroupDataTable({ groupId, subgroup }: Props) {
 								<TableCell>{row.id}</TableCell>
 								<TableCell>{row.year}</TableCell>
 								<TableCell>{getMonthLabel(row.month)}</TableCell>
-								<TableCell>{row.country_code?.official}</TableCell>
+								<TableCell>{row.country_code?.data.official}</TableCell>
 								<TableCell>{row.tourist_count}</TableCell>
 								<TableCell align='right'>
 									<Tooltip title='Редактировать'>

@@ -9,14 +9,15 @@ import {
 	TextField,
 } from '@mui/material'
 import { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
+import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useEditYield } from '../../../../hooks/useAgriculture'
 import type {
 	CreateYieldForm,
 	GetYieldForm,
 } from '../../../../types/agriculture'
-import { MonthSelect } from '../../../../components/common/MonthSelect'
 
 const isNumeric = (val: string) =>
 	typeof val === 'string' &&
@@ -70,7 +71,7 @@ export default function YieldEditModal({
 			reset({
 				year: data.year,
 				month: data.month,
-				country_code: data.country.official,
+				country_code: data.country.data.official,
 				product: data.product,
 				type: data.type,
 				value: String(data.value),
@@ -110,18 +111,10 @@ export default function YieldEditModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<Controller
-								name='country_code'
+							<CountrySelect
 								control={control}
-								render={({ field }) => (
-									<TextField
-										label='Страна'
-										fullWidth
-										{...field}
-										error={!!errors.country_code}
-										helperText={errors.country_code?.message}
-									/>
-								)}
+								name='country_code'
+								error={errors.country_code?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

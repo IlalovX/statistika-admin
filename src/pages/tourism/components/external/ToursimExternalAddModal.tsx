@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
 import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateExternal } from '../../../../hooks/useTourism'
 import type { CreateTourismExternalForm } from '../../../../types/tourism'
@@ -75,10 +76,10 @@ export default function ToursimExternalAddModal({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								label='Код страны'
-								fullWidth
-								{...register('country_code')}
+							<CountrySelect
+								control={control}
+								name='country_code'
+								error={errors.country_code?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

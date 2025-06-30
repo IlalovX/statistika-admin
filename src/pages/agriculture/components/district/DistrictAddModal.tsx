@@ -74,7 +74,6 @@ export default function AddDistrictModal({
 								control={control}
 								name='region_id'
 								error={errors.region_id?.message}
-								
 							/>
 						</Grid>
 

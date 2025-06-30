@@ -24,8 +24,12 @@ export interface GetTourismExternal {
 	year: number
 	month: number
 	country_code: {
-		official: string
-		common: string
+		cca2: string
+		cioc: string
+		data: {
+			official: string
+			common: string
+		}
 	} | null
 	inbound_tourists: number
 	outbound_tourists: number

@@ -12,6 +12,7 @@ import { z } from 'zod'
 import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useCreateTourismGroupData } from '../../../../hooks/useTourismGroups'
 import type { GetTourismSubGroupList } from '../../../../types/tourism-groups'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
 
 interface Props {
 	groupId: number
@@ -88,12 +89,10 @@ export function TourismGroupDataAddModal({
 						name='month'
 						error={errors.month?.message}
 					/>
-					<TextField
-						label='Код страны '
-						fullWidth
-						error={!!errors.country_code}
-						helperText={errors.country_code?.message}
-						{...register('country_code')}
+					<CountrySelect
+						control={control}
+						name='country_code'
+						error={errors.country_code?.message}
 					/>
 					<TextField
 						label='Количество туристов'

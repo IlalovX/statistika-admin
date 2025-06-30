@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
 import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { useEditExternal } from '../../../../hooks/useTourism'
 import type {
@@ -47,7 +48,7 @@ export function EditExternalDialog({
 		defaultValues: {
 			year: initialData.year,
 			month: initialData.month,
-			country_code: initialData.country_code?.official,
+			country_code: initialData.country_code?.cioc || '', // cioc = alpha3Code
 			inbound_tourists: initialData.inbound_tourists,
 			outbound_tourists: initialData.outbound_tourists,
 			tourism_profit: initialData.tourism_profit,
@@ -90,10 +91,10 @@ export function EditExternalDialog({
 							/>
 						</Grid>
 						<Grid size={6}>
-							<TextField
-								label='Код страны'
-								fullWidth
-								{...register('country_code')}
+							<CountrySelect
+								control={control}
+								name='country_code'
+								error={errors.country_code?.message}
 							/>
 						</Grid>
 						<Grid size={6}>

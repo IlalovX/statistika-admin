@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { CountrySelect } from '../../../../components/common/CountrySelect'
 import { MonthSelect } from '../../../../components/common/MonthSelect'
 import { RegionSelect } from '../../../../components/common/RegionSelect'
 import { useCreateInvestment } from '../../../../hooks/useInvestment'
@@ -85,12 +86,10 @@ export default function InvestmentAddModal({
 						</Grid>
 
 						<Grid size={6}>
-							<TextField
-								label='Код страны'
-								fullWidth
-								error={!!errors.country_code}
-								helperText={errors.country_code?.message}
-								{...register('country_code')}
+							<CountrySelect
+								control={control}
+								name='country_code'
+								error={errors.country_code?.message}
 							/>
 						</Grid>
 
