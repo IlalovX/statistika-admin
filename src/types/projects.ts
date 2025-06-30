@@ -3,7 +3,7 @@ export interface CreateProjectForm {
 	project_initiator: string
 	project_name: string
 	project_budget: string
-	jobs_created: string
+	jobs_created: number
 	planned_date: string
 	responsible_party?: string
 	project_status_id: number

@@ -40,7 +40,7 @@ function ProjectsAddModal({
 	statuses: ProjectsStatusesForm[]
 }) {
 	const [open, setOpen] = useState(false)
-	const user = useAppSelector(state => state.user_me.user)
+	const user = useAppSelector((state) => state.user_me.user)
 
 	const {
 		register,
@@ -75,14 +75,12 @@ function ProjectsAddModal({
 	}, [user, regions, setValue])
 
 	const onSubmit = async (data: FormValues) => {
-		const [year, month, day] = data.planned_date.split('-')
-		const formattedDate = `${day}.${month}.${year}`
 		const transformedData = {
 			...data,
-			planned_date: formattedDate,
+			jobs_created: +data.jobs_created,
+			planned_date: `${data.planned_date}T00:00:00`, // 🔹 преобразуем здесь
 			status_reason: '',
 		}
-
 		try {
 			await create.mutateAsync(transformedData)
 			handleClose()
@@ -125,7 +123,7 @@ function ProjectsAddModal({
 										error={!!errors?.region_id}
 										helperText={errors?.region_id?.message}
 										value={
-											regions?.find(r => r.id === user?.region_id)
+											regions?.find((r) => r.id === user?.region_id)
 												?.region_name || 'Неизвестно'
 										}
 										InputProps={{
@@ -143,7 +141,9 @@ function ProjectsAddModal({
 									value={watchedValues.project_initiator || ''}
 									error={!!errors.project_initiator}
 									helperText={errors.project_initiator?.message}
-									onChange={e => setValue('project_initiator', e.target.value)}
+									onChange={(e) =>
+										setValue('project_initiator', e.target.value)
+									}
 								/>
 							</Grid>
 
@@ -155,7 +155,7 @@ function ProjectsAddModal({
 									value={watchedValues.project_name || ''}
 									error={!!errors.project_name}
 									helperText={errors.project_name?.message}
-									onChange={e => setValue('project_name', e.target.value)}
+									onChange={(e) => setValue('project_name', e.target.value)}
 								/>
 							</Grid>
 
@@ -167,7 +167,7 @@ function ProjectsAddModal({
 									value={watchedValues.project_budget || ''}
 									error={!!errors.project_budget}
 									helperText={errors.project_budget?.message}
-									onChange={e => setValue('project_budget', e.target.value)}
+									onChange={(e) => setValue('project_budget', e.target.value)}
 								/>
 							</Grid>
 
@@ -179,7 +179,7 @@ function ProjectsAddModal({
 									value={watchedValues.jobs_created || ''}
 									error={!!errors.jobs_created}
 									helperText={errors.jobs_created?.message}
-									onChange={e => setValue('jobs_created', e.target.value)}
+									onChange={(e) => setValue('jobs_created', e.target.value)}
 								/>
 							</Grid>
 
@@ -193,7 +193,7 @@ function ProjectsAddModal({
 									value={watchedValues.planned_date || ''}
 									error={!!errors.planned_date}
 									helperText={errors.planned_date?.message}
-									onChange={e => setValue('planned_date', e.target.value)}
+									onChange={(e) => setValue('planned_date', e.target.value)}
 								/>
 							</Grid>
 
@@ -205,7 +205,9 @@ function ProjectsAddModal({
 									value={watchedValues.responsible_party || ''}
 									error={!!errors.responsible_party}
 									helperText={errors.responsible_party?.message}
-									onChange={e => setValue('responsible_party', e.target.value)}
+									onChange={(e) =>
+										setValue('responsible_party', e.target.value)
+									}
 								/>
 							</Grid>
 
@@ -218,13 +220,15 @@ function ProjectsAddModal({
 									value={watchedValues.project_status_id || ''}
 									error={!!errors.project_status_id}
 									helperText={errors.project_status_id?.message}
-									onChange={e => setValue('project_status_id', +e.target.value)}
+									onChange={(e) =>
+										setValue('project_status_id', +e.target.value)
+									}
 								>
 									<MenuItem value='' disabled>
 										Выберите статус
 									</MenuItem>
 									{statuses && statuses.length > 0 ? (
-										statuses.map(status => (
+										statuses.map((status) => (
 											<MenuItem key={status.id} value={status.id}>
 												{status.value}
 											</MenuItem>
@@ -245,7 +249,7 @@ function ProjectsAddModal({
 									value={watchedValues.overall_status || ''}
 									error={!!errors.overall_status}
 									helperText={errors.overall_status?.message}
-									onChange={e => setValue('overall_status', e.target.value)}
+									onChange={(e) => setValue('overall_status', e.target.value)}
 								/>
 							</Grid>
 						</Grid>
