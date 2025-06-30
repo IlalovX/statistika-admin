@@ -16,7 +16,7 @@ export function useCreateUser() {
 	const queryClient = useQueryClient()
 	return useMutation<DetailSuccessfully, Error, AdminCreateForm>({
 		mutationKey: [QUERY_KEYS.USERS.CREATE],
-		mutationFn: data => UserService.createAdmin(data),
+		mutationFn: (data) => UserService.createAdmin(data),
 		onSuccess: () => {
 			toast.success('Успешно создано ✅')
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS.LIST] })
@@ -32,12 +32,24 @@ export function useEditUser() {
 		AdminCreateForm & { id: string | number }
 	>({
 		mutationKey: [QUERY_KEYS.USERS.EDIT],
-		mutationFn: data => {
+		mutationFn: (data) => {
 			const { id, ...formData } = data
 			return UserService.editAdmin(formData, id)
 		},
 		onSuccess: () => {
 			toast.success('Успешно изменено ✅')
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS.LIST] })
+		},
+	})
+}
+
+export function useDeleteAdmin() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationKey: ['delete_admin'],
+		mutationFn: (data: { id: string }) => UserService.deleteAdmin(data.id),
+		onSuccess: () => {
+			toast.success('Успешно удаленно ✅')
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS.LIST] })
 		},
 	})

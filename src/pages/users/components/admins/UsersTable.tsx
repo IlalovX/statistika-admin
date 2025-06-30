@@ -10,15 +10,20 @@ import {
 	TableRow,
 } from '@mui/material'
 import { useCategories } from '../../../../context/CategoriesContext'
-import { useGetUsersList } from '../../../../hooks/useUsers'
+import { useDeleteAdmin, useGetUsersList } from '../../../../hooks/useUsers'
 import UsersEditModal from './UsersEditModal'
 
 function UsersTable() {
 	const categories = useCategories()
+	const { mutateAsync: deleteUser } = useDeleteAdmin()
 	const { data: users = [] } = useGetUsersList()
 
 	const getCategoryName = (id: string) => {
-		return categories?.find(c => c.id === id)?.category_name || id
+		return categories?.find((c) => c.id === id)?.category_name || id
+	}
+
+	const handleDelete = async (id: string) => {
+		await deleteUser({ id })
 	}
 
 	return (
@@ -36,7 +41,7 @@ function UsersTable() {
 					</TableHead>
 
 					<TableBody>
-						{users.map(user => (
+						{users.map((user) => (
 							<TableRow key={user.id}>
 								<TableCell>{user.name}</TableCell>
 								<TableCell>{user.username}</TableCell>
@@ -44,7 +49,10 @@ function UsersTable() {
 								<TableCell>{getCategoryName(user.category)}</TableCell>
 								<TableCell align='center'>
 									<UsersEditModal user={user} />
-									<IconButton color='error'>
+									<IconButton
+										color='error'
+										onClick={() => handleDelete(user.id)}
+									>
 										<DeleteIcon />
 									</IconButton>
 								</TableCell>

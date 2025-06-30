@@ -14,4 +14,8 @@ export const UserService = {
 		const res = await axiosWithAuth.post(`/admin/update/${id}`, data)
 		return res.data.data
 	},
+	async deleteAdmin(id: string) {
+		const res = await axiosWithAuth.delete(`/admin/delete/${id}`)
+		return res.data.data
+	},
 }
