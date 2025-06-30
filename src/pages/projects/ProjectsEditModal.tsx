@@ -54,7 +54,7 @@ export default function ProjectsEditModal({
 	statuses,
 }: Props) {
 	const { mutateAsync, isPending } = useEditProject()
-	const user = useAppSelector(state => state.user_me.user)
+	const user = useAppSelector((state) => state.user_me.user)
 	const isReadOnly = user && !user.is_superadmin
 
 	const {
@@ -69,7 +69,7 @@ export default function ProjectsEditModal({
 			project_name: project?.project_name || '',
 			project_initiator: project?.project_initiator || '',
 			project_budget: project?.project_budget || '',
-			jobs_created: +(project?.jobs_created as string) || 0,
+			jobs_created: (project?.jobs_created as number) || 0,
 			planned_date: project?.planned_date.split(' ')[0] || '',
 			responsible_party: project?.responsible_party || '',
 			overall_status: project?.overall_status || '',
@@ -187,7 +187,6 @@ export default function ProjectsEditModal({
 								control={control}
 								name='region_id'
 								error={errors.region_id?.message}
-								
 							/>
 						</Grid>
 
@@ -204,7 +203,7 @@ export default function ProjectsEditModal({
 										error={!!errors.project_status_id}
 										helperText={errors.project_status_id?.message}
 									>
-										{statuses.map(s => (
+										{statuses.map((s) => (
 											<MenuItem key={s.id} value={s.id}>
 												{s.value}
 											</MenuItem>

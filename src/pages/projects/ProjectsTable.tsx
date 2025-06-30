@@ -86,7 +86,7 @@ export function ProjectTable({
 			project_name: project.project_name,
 			project_initiator: project.initiator,
 			project_budget: String(project.budget),
-			jobs_created: project.jobs_created,
+			jobs_created: +project.jobs_created,
 			planned_date: project.planned_date,
 			responsible_party: project.responsible_party,
 			project_status_id: getStatusIdFromValue(project.project_status.value), // ⚠️
