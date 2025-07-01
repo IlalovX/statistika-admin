@@ -10,6 +10,7 @@ function Projects() {
 	const navigate = useNavigate()
 	const { data: regions = [] } = useGetRegionsList()
 	const { data: statuses = [] } = useGetProjectsStatusesList()
+
 	return (
 		<div className='space-y-5'>
 			<header className='flex justify-between items-center  gap-5'>

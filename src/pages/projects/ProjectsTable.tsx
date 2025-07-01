@@ -21,6 +21,7 @@ import ProjectsEditModal from './ProjectsEditModal'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import InfoIcon from '@mui/icons-material/Info'
+import { useAppSelector } from '../../utils/helpers'
 
 type Column = {
 	id:
@@ -63,6 +64,9 @@ export function ProjectTable({
 	regions: Region[]
 	statuses: ProjectsStatusesForm[]
 }) {
+	const me = useAppSelector((state) => state.user_me.user)
+	console.log(me)
+
 	const { data: projects = [] } = useGetProjectsList()
 	const { mutate: deleteProject } = useDeleteProject()
 
@@ -121,7 +125,13 @@ export function ProjectTable({
 
 	return (
 		<>
-			<TableContainer component={Paper}>
+			<TableContainer
+				component={Paper}
+				sx={{
+					maxHeight: 700,
+					overflowY: 'auto',
+				}}
+			>
 				<Table sx={{ tableLayout: 'fixed' }}>
 					<TableHead>
 						<TableRow>
@@ -129,7 +139,14 @@ export function ProjectTable({
 								<TableCell
 									key={col.id}
 									align={col.align || 'left'}
-									sx={{ fontWeight: 'bold', width: col.width }}
+									sx={{
+										fontWeight: 'bold',
+										width: col.width,
+										position: 'sticky',
+										top: 0,
+										zIndex: 1,
+										backgroundColor: 'background.paper',
+									}}
 								>
 									{col.label}
 								</TableCell>
@@ -165,12 +182,20 @@ export function ProjectTable({
 									</IconButton>
 								</TableCell>
 								<TableCell align='right'>
-									<IconButton onClick={() => handleOpen(project, 'edit')}>
-										<EditIcon />
-									</IconButton>
-									<IconButton onClick={() => handleDelete(project.id)}>
-										<DeleteIcon color='error' />
-									</IconButton>
+									{me?.is_superadmin || me?.region_id === project.region.id ? (
+										<>
+											<IconButton onClick={() => handleOpen(project, 'edit')}>
+												<EditIcon />
+											</IconButton>
+											<IconButton onClick={() => handleDelete(project.id)}>
+												<DeleteIcon color='error' />
+											</IconButton>
+										</>
+									) : (
+										<Typography variant='body2' color='text.secondary'>
+											Нет доступа
+										</Typography>
+									)}
 								</TableCell>
 							</TableRow>
 						))}
